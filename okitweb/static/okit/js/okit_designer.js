@@ -246,17 +246,21 @@ function displayGitSaveDialog(title, callback, show_dir=true, show_filename=true
         tr.append('div').attr('class', 'td').text('Directory Name:');
         tr.append('div').attr('class', 'td').append('input')
             .attr('class', 'okit-input')
+            .attr('style', 'text-transform: lowercase')
             .attr('id', 'git_repository_directory')
             .attr('type', 'text');
     }
+    $('#git_repository_directory').val(toFilename(okitJsonModel.title));
     if (show_filename) {
         tr = tbody.append('div').attr('class', 'tr').attr('id', 'export_box_filename');
         tr.append('div').attr('class', 'td').text('File Name:');
         tr.append('div').attr('class', 'td').append('input')
             .attr('class', 'okit-input')
+            .attr('style', 'text-transform: lowercase')
             .attr('id', 'git_repository_filename')
             .attr('type', 'text');
     }
+    $('#git_repository_filename').val(`${toFilename(okitJsonModel.title)}.json`);
     tr = tbody.append('div').attr('class', 'tr').attr('id', 'export_box_commitmsg');
     tr.append('div').attr('class', 'td').text('Commit Message:');
     tr.append('div').attr('class', 'td').append('input')
@@ -265,11 +269,21 @@ function displayGitSaveDialog(title, callback, show_dir=true, show_filename=true
         .attr('type', 'text');
 
     // Submit
+    /*
     let save_button = d3.select(d3Id('modal_dialog_footer')).append('div').append('button')
         .attr('id', 'export_terraform_option_id')
         .attr('type', 'button')
-        .text('Submit');
+        .text('Save');
     save_button.on("click", callback);
+
+     */
+
+    // Submit Button
+    let submit = d3.select(d3Id('modal_dialog_footer')).append('div').append('button')
+        .attr('id', 'submit_query_btn')
+        .attr('type', 'button')
+        .text('Save')
+        .on('click', callback);
     $(jqId('modal_dialog_wrapper')).removeClass('hidden');
 }
 function handleSaveAs(evt) {
@@ -343,30 +357,38 @@ function handleSaveAsTemplate(e) {
 function handleSaveToGit(e) {
     displayGitSaveDialog('Save To Git', () =>
     {
-        okitJsonModel.git_repository = $(jqId('git_repository')).val();
-        okitJsonModel.git_repository_filename = $(jqId('git_repository_filename')).val();
-        okitJsonModel.git_repository_commitmsg = $(jqId('git_repository_commitmsg')).val();
-        okitJsonModel.template_type = 'Git';
-        okitJsonModel.updated = getCurrentDateTime();
+        let request_json = JSON.clone(okitJsonModel);
+        request_json.git_repository = $(jqId('git_repository')).val();
+        request_json.git_repository_directory = $(jqId('git_repository_directory')).val();
+        request_json.git_repository_filename = $(jqId('git_repository_filename')).val();
+        request_json.git_repository_commitmsg = $(jqId('git_repository_commitmsg')).val();
+        request_json.template_type = 'Git';
+        request_json.updated = getCurrentDateTime();
+        hideNavMenu();
+        setBusyIcon();
+        $(jqId('modal_dialog_progress')).removeClass('hidden');
+        $(jqId('submit_query_btn')).text('.........Processing');
+        $(jqId('submit_query_btn')).attr('disabled', 'disabled');
         $.ajax({
             type: 'post',
             url: 'saveas/git',
             dataType: 'text',
             contentType: 'application/json',
-            data: JSON.stringify(okitJsonModel),
+            data: JSON.stringify(request_json),
             success: function (resp) {
                 console.info('Response : ' + resp);
-                // Hide modal dialog
-                $(jqId('modal_dialog_wrapper')).addClass('hidden');
             },
             error: function (xhr, status, error) {
                 console.info('Status : ' + status)
                 console.info('Error : ' + error)
-                // Hide modal dialog
+            },
+            complete: function () {
+                unsetBusyIcon();
                 $(jqId('modal_dialog_wrapper')).addClass('hidden');
+                $(jqId('modal_dialog_progress')).addClass('hidden');
             }
         });
-    }, false, true);
+    }, true, true);
 }
 /*
 ** Redraw / Redisplay the existing Json
@@ -376,14 +398,10 @@ function handleRedraw(evt) {
     redrawSVGCanvas();
     return false;
 }
-function redrawSVGCanvas(region='') {
-    console.info('>>>>>>>>> Redrawing Canvas (Region : ' + region +')');
-    console.info('>>>>>>>>> Active Region            : ' + activeRegion);
-    console.info(okitJsonView);
-    if (region === '' || region === activeRegion) {
-        displayDesignerView();
-        displayOkitJson();
-    }
+function redrawSVGCanvas(recalculate=false) {
+    if (recalculate) {resetRecalculateFlag();}
+    displayDesignerView();
+    displayOkitJson();
 }
 /*
 ** Validate Model
@@ -717,10 +735,22 @@ $(document).ajaxStop(function() {
 /*
 ** Export SVG
  */
+function setExportDisplay() {
+    const top_level_compartment = okitJsonView.top_level_compartment;
+    // Draw top level compartment with minimum rectangle size
+    top_level_compartment.export = true;
+    top_level_compartment.recalculate_dimensions = true;
+    okitJsonView.draw(true);
+    const dimensions = top_level_compartment.dimensions;
+    top_level_compartment.export = false;
+    top_level_compartment.recalculate_dimensions = true;
+    return dimensions;
+}
 function handleExportToSVG(evt) {
     hideNavMenu();
-    let okitcanvas = document.getElementById("canvas-svg");
-    let name = okitJsonModel.compartments[0]['name'];
+    setExportDisplay();
+    const okitcanvas = document.getElementById("canvas-svg");
+    const name = okitJsonModel.compartments[0]['name'];
     let filename = name + '.svg';
     if (okitSettings.is_timestamp_files) {
         filename = name + getTimestamp() + '.svg';
@@ -752,7 +782,8 @@ function handleExportToJPG(evt) {
     saveAsImage('jpeg');
 }
 function saveAsImage(type='jpeg') {
-    console.log("Saving As " + type);
+    console.info("Saving As " + type);
+    const dimensions = setExportDisplay();
     let svg = d3.select(d3Id("canvas-svg")).node();
     let serializer = new XMLSerializer();
     let svgStr = serializer.serializeToString(svg);
@@ -772,17 +803,19 @@ function saveAsImage(type='jpeg') {
         const image = new Image();
         canvas.width = img.clientWidth;
         canvas.height = img.clientHeight;
+        canvas.width = dimensions.width;
+        canvas.height = dimensions.height;
         image.crossOrigin = 'anonymous';
         image.onload = function () {
             context.drawImage(image,0,0);
             triggerDownload(canvas.toDataURL("image/" + type), filename + "." + type);
             document.body.removeChild(img);
+            redrawSVGCanvas();
         }
         image.src = img.src;
     }
 
     img.src = 'data:image/svg+xml;base64,' + window.btoa(svgStr);
-    console.log();
 }
 /*
 ** Resource Manager
@@ -812,7 +845,7 @@ function addRegionTab(region) {
             activeRegion = region;
             okitJsonModel = regionOkitJson[region];
             newDesignerView();
-            redrawSVGCanvas(region);
+            redrawSVGCanvas();
         });
 }
 function addRegionTabProgress(region) {
@@ -854,6 +887,12 @@ function displayOkitJson() {
 function displayDesignerView() {
     okitJsonView.draw();
     setTitleDescription();
+}
+function resetRecalculateFlag() {
+    for (let resource of [...okitJsonView.getCompartments(), ...okitJsonView.getVirtualCloudNetworks(),
+        ...okitJsonView.getSubnets()]) {
+        resource.recalculate_dimensions = true;
+    }
 }
 /*
 ** Slidebar handlers

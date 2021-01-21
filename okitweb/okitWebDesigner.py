@@ -39,6 +39,7 @@ from generators.okitAnsibleGenerator import OCIAnsibleGenerator
 from generators.okitTerraform11Generator import OCITerraform11Generator
 from generators.okitTerraformGenerator import OCITerraformGenerator
 from generators.okitResourceManagerGenerator import OCIResourceManagerGenerator
+from generators.okitMarkdownGenerator import OkitMarkdownGenerator
 
 # Configure logging
 logger = getLogger()
@@ -71,7 +72,7 @@ def readConfigFileSections(config_file='~/.oci/config'):
         config_sections = ['Instance Principal']
     return config_sections
 
-def readConfigFileSettings(config_file='~/.oci/settings'):
+def readConfigFileSettings(config_file='~/.oci/git_repositories'):
     logger.debug('Setting File {0!s:s}'.format(config_file))
     abs_config_file = os.path.expanduser(config_file)
     logger.debug('Setting File {0!s:s}'.format(abs_config_file))
@@ -79,7 +80,7 @@ def readConfigFileSettings(config_file='~/.oci/settings'):
     config.read(abs_config_file)
     repo_list = []
     for each_git_section in config.sections():
-        repo_list.append({'label':each_git_section, 'branch': config[each_git_section]['branch'], 'url': config[each_git_section]['url']})
+        repo_list.append({'label': each_git_section, 'branch': config[each_git_section]['branch'], 'url': config[each_git_section]['url']})
     return repo_list
 
 def getConfigFileValue(section, key, config_file='~/.oci/config'):
@@ -137,6 +138,14 @@ def handle_exception(error):
 
 @bp.route('/designer', methods=(['GET']))
 def designer():
+    # Test if developer mode
+    developer_mode = (request.args.get('developer', default='false') == 'true')
+    if developer_mode:
+        logger.info("<<<<<<<<<<<<<<<<<<<<<<<<<< Developer Mode >>>>>>>>>>>>>>>>>>>>>>>>>>")
+    # Test if experimental mode
+    experimental_mode = (request.args.get('experimental', default='false') == 'true')
+    if experimental_mode:
+        logger.info("<<<<<<<<<<<<<<<<<<<<<<<<<< Experimental Mode >>>>>>>>>>>>>>>>>>>>>>>>>>")
     # Read Artifact Model Specific JavaScript Files
     artefact_model_js_files = sorted(os.listdir(os.path.join(bp.static_folder, 'model', 'js', 'artefacts')))
     # Read Artifact View Specific JavaScript Files
@@ -235,7 +244,8 @@ def designer():
                            palette_icon_groups=palette_icon_groups,
                            fragment_icons=fragment_icons,
                            okit_templates_groups=template_groups,
-                           okit_template_categories=template_categories)
+                           okit_template_categories=template_categories,
+                           developer_mode=developer_mode, experimental_mode=experimental_mode)
 
 
 def build_categories(path, key, category, templates):
@@ -307,6 +317,8 @@ def generate(language, destination):
                 generator = OCITerraform11Generator(template_root, destination_dir, request.json)
             elif language == 'resource-manager':
                 generator = OCIResourceManagerGenerator(template_root, destination_dir, request.json)
+            elif language == 'markdown':
+                generator = OkitMarkdownGenerator(template_root, destination_dir, request.json)
             generator.generate()
             generator.writeFiles()
             if destination == 'git':
@@ -353,7 +365,11 @@ def saveas(savetype):
                 git_url, git_branch = request.json['git_repository'].split('*')
                 git_commit_msg = request.json['git_repository_commitmsg']
                 if request.json['git_repository_filename'] != '':
-                    filename = '{0!s:s}.json'.format(request.json['git_repository_filename'].replace(' ', '_').lower())
+                    filename = request.json['git_repository_filename'].replace(' ', '_').lower()
+                    if not filename.endswith('.json'):
+                        filename = '{0!s:s}.json'.format(filename)
+                if request.json['git_repository_directory'] != '':
+                    filename = os.path.join(request.json['git_repository_directory'], filename)
                 parsed_git_url = giturlparse.parse(git_url)
                 template_git_dir = os.path.abspath(os.path.join(bp.static_folder, 'templates', 'git'))
                 if not os.path.exists(template_git_dir):
@@ -368,6 +384,7 @@ def saveas(savetype):
                 fullpath = os.path.abspath(os.path.join(git_repo_dir, filename))
                 # Remove git info
                 del request.json['git_repository']
+                del request.json['git_repository_directory']
                 del request.json['git_repository_filename']
                 del request.json['git_repository_commitmsg']
                 writeJsonFile(request.json, fullpath)

@@ -276,6 +276,11 @@
     overflow: auto;
 }
 
+.okit-resource-description {
+    resize: vertical;
+    white-space: normal;
+}
+
 .okit-source-code {
     opacity: 1;
     height: 100%;

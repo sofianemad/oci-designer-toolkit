@@ -5,7 +5,7 @@
 FROM oraclelinux:7-slim
 LABEL "provider"="Oracle" \
       "issues"="https://github.com/oracle/oci-designer-toolkit/issues" \
-      "version"="0.15.0" \
+      "version"="0.16.0" \
       "description"="OKIT Web Server Container." \
       "copyright"="Copyright (c) 2020, Oracle and/or its affiliates."
 SHELL ["/bin/bash", "-c"]
@@ -47,6 +47,7 @@ RUN yum install -y \
         git-url-parse==1.2.2 \
         gunicorn==20.0.4 \
         oci==2.22.0 \
+        openpyxl==3.0.5 \
         pandas==1.1.2 \
         python-magic==0.4.18 \
         pyyaml==5.3.1 \
