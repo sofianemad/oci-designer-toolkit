@@ -45,7 +45,12 @@ class OkitDesignerJsonView extends OkitJsonView {
         for (let virtual_cloud_network of this.virtual_cloud_networks) {
             virtual_cloud_network.draw();
         }
-        // Block Storage Volumes
+        // Applications
+	    for (let application of this.applications) {
+ 	        application.draw();
+	    }
+
+	    // Block Storage Volumes
         for (let block_storage_volume of this.block_storage_volumes) {
             block_storage_volume.draw();
         }

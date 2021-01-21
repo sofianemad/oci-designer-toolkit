@@ -17,6 +17,7 @@ class OkitJson {
         this.created = getCurrentDateTime();
         this.updated = this.created;
         this.okit_version = okitVersion;
+        this.applications = [];
         this.compartments = [];
         this.customer_premise_equipments = [];
         this.autonomous_databases = [];
@@ -61,6 +62,7 @@ class OkitJson {
         if (okit_json.description) {
             this.description = okit_json.description;
         }
+
         // Compartments
         if (okit_json.hasOwnProperty('compartments')) {
             for (let artefact of okit_json['compartments']) {
@@ -69,6 +71,14 @@ class OkitJson {
         }
 
         // Compartment Subcomponents
+
+        //Application
+        if (okit_json.hasOwnProperty('applications')) {
+           for (let artefact of okit_json['applications']) {
+               let obj = this.newApplication(artefact);
+           }
+        }
+
         // Autonomous Databases
         if (okit_json.hasOwnProperty('autonomous_databases')) {
             for (let artefact of okit_json['autonomous_databases']) {

@@ -47,7 +47,8 @@ class OkitJsonView {
 
     clear() {
         this.compartments = [];
-        this.autonomous_databases = [];
+        this.applications =[];
+	    this.autonomous_databases = [];
         this.block_storage_volumes = [];
         this.customer_premise_equipments = [];
         this.database_systems = [];
@@ -77,7 +78,8 @@ class OkitJsonView {
     load() {
         this.clear();
         for (let artefact of this.okitjson.compartments) {this.newCompartment(artefact);}
-        for (let artefact of this.okitjson.autonomous_databases) {this.newAutonomousDatabase(artefact);}
+        for (let artefact of this.okitjson.applications) {this.newApplication(artefact);}
+	    for (let artefact of this.okitjson.autonomous_databases) {this.newAutonomousDatabase(artefact);}
         for (let artefact of this.okitjson.block_storage_volumes) {this.newBlockStorageVolume(artefact);}
         for (let artefact of this.okitjson.customer_premise_equipments) {this.newCustomerPremiseEquipment(artefact);}
         for (let artefact of this.okitjson.database_systems) {this.newDatabaseSystem(artefact);}

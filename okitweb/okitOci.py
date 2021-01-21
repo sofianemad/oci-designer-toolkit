@@ -248,6 +248,10 @@ def ociArtifacts(artifact):
         logger.info('---- Processing Autonomous Databases')
         oci_autonomous_databases = OCIAutonomousDatabases(config=config, profile=config_profile, compartment_id=query_json['compartment_id'])
         response_json = oci_autonomous_databases.list(filter=query_json.get('autonomous_database_filter', None))
+    elif artifact == 'Application':
+        logger.info('---- Processing Applictions')
+        oci_applications = OCIApplications (config=config, profile=config_profile, compartment_id=query_json['compartment_id'])
+        response_json = oci_applications.list(filter=query_json.get('application_filter', None))
     elif artifact == 'BlockStorageVolume':
         logger.info('---- Processing Block Storage Volumes')
         oci_block_storage_volumes = OCIBlockStorageVolumes(config=config, profile=config_profile, compartment_id=query_json['compartment_id'])

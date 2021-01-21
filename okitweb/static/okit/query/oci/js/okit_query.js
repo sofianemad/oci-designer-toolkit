@@ -49,6 +49,59 @@ class OkitOCIQuery {
         }
     }
 
+    queryBlockStorageVolumes(request) {
+	    console.info('------------- Application Query --------------------');
+	    console.info('------------- Compartment : ' + request.compartment_id);
+	    let me = this;
+	    this.region_query_count[request.region]++;
+	    $.ajax({
+	    	type: 'get',
+		url: 'oci/artefacts/Application',
+		dataType: 'text',
+		contentType: 'application/json',
+		data: JSON.stringify(request),
+		success: function(resp) {
+			let response_json = JSON.parse(resp);
+			regionOkitJson[request.region].load({block_storage_volumes: response_json});
+			if (request.refresh) {okitJsonView.draw();}
+		},
+		error: function(xhr, status, error) {
+			console.warn('Status : ' + status);
+		     	console.warn('Error  : ' + error);
+		},
+		complete: function () {
+			me.region_query_count[request.region]-- && me.isComplete();
+						            }
+		});
+    }
+
+    queryApplications(request) {
+        console.info('------------- Autonomous Database Query --------------------');
+        console.info('------------- Compartment : ' + request.compartment_id);
+        let me = this;
+        this.region_query_count[request.region]++;
+        $.ajax({
+            type: 'get',
+            url: 'oci/artefacts/Application',
+            dataType: 'text',
+            contentType: 'application/json',
+            data: JSON.stringify(request),
+            success: function(resp) {
+                let response_json = JSON.parse(resp);
+                regionOkitJson[request.region].load({application: response_json});
+                if (request.refresh) {okitJsonView.draw();}
+            },
+            error: function(xhr, status, error) {
+                console.warn('Status : ' + status);
+                console.warn('Error  : ' + error);
+            },
+            complete: function () {
+                me.region_query_count[request.region]-- && me.isComplete();
+            }
+        });
+    }
+
+
     queryAutonomousDatabases(request) {
         console.info('------------- Autonomous Database Query --------------------');
         console.info('------------- Compartment : ' + request.compartment_id);
@@ -176,7 +229,8 @@ class OkitOCIQuery {
         if (request.sub_compartments) {
             this.queryCompartments(request);
         }
-        this.queryVirtualCloudNetworks(request);
+        this.queryApplications(request);
+	    this.queryVirtualCloudNetworks(request);
         this.queryBlockStorageVolumes(request);
         this.queryCustomerPremiseEquipments(request);
         this.queryDynamicRoutingGateways(request);

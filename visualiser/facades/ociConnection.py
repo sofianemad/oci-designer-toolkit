@@ -119,6 +119,15 @@ class OCIAutoScalingConnection(OCIConnection):
         self.client = oci.autoscaling.AutoScalingClient(config=self.config, signer=self.signer)
         return
 
+class OCIApplicationConnection(OCIConnection):
+    def __init__(self, config=None, configfile=None, profile=None):
+        super(OCIApplicationConnection, self).__init__(config=config, configfile=configfile, profile=profile)
+
+    def connect(self):
+        self.client = oci.core.ApplicationClient(config=self.config, signer=self.signer)
+        return
+
+
 
 class OCIBlockStorageVolumeConnection(OCIConnection):
     def __init__(self, config=None, configfile=None, profile=None):
