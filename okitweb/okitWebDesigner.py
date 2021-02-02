@@ -83,6 +83,17 @@ def readConfigFileSettings(config_file='~/.oci/git_repositories'):
         repo_list.append({'label': each_git_section, 'branch': config[each_git_section]['branch'], 'url': config[each_git_section]['url']})
     return repo_list
 
+def readApplicationSettings(config_file='~/.oci/app_settings'):
+    logger.debug('Application Setting File {0!s:s}'.format(config_file))
+    abs_config_file = os.path.expanduser(config_file)
+    logger.debug('Application Setting File {0!s:s}'.format(abs_config_file))
+    config = configparser.ConfigParser()
+    config.read(abs_config_file)
+    app_settings = {}
+    for each_app_setting in config.sections():
+        app_settings[each_app_setting] = config[each_app_setting]['value']
+    return app_settings
+
 def getConfigFileValue(section, key, config_file='~/.oci/config'):
     value = ''
     if os.getenv('OCI_CLI_AUTH', 'config') != 'instance_principal':
@@ -237,6 +248,10 @@ def designer():
     config_sections = {"sections": readConfigFileSections()}
     logger.debug('Config Sections {0!s:s}'.format(config_sections))
 
+    app_settings = readApplicationSettings()
+    user = request.headers.get(app_settings.get('REMOTE_USER'), '')
+
+
     #Render The Template
     return render_template('okit/okit_designer.html',
                            artefact_model_js_files=artefact_model_js_files,
@@ -245,6 +260,8 @@ def designer():
                            fragment_icons=fragment_icons,
                            okit_templates_groups=template_groups,
                            okit_template_categories=template_categories,
+                           user=user,
+                           logout_url=app_settings.get('LOGOUT_URL', ''),
                            developer_mode=developer_mode, experimental_mode=experimental_mode)
 
 
