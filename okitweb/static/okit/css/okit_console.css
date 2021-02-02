@@ -978,3 +978,34 @@ li a.parent-item:hover {
     border-color: yellow;
     background-color: #ffffe6;
 }
+.okit-header-left {
+    margin-right: auto;
+    flex: 1;
+    display: flex;
+    justify-content: left;
+}
+.okit-header-middle {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+}
+.okit-header-right {
+    flex: 1;
+    display: flex;
+    justify-content: flex-end;
+}
+.okit-header-usertext {
+    color: #fff;
+    margin-right: 11px;
+    margin-top: 7px;
+}
+.okit-header-logout {
+    color: #fff;
+    margin-top: 7px;
+    margin-left: 10px;
+    cursor: pointer;
+    text-decoration: none;
+}
+.okit-header-logout:after {
+    content: ' \2794';
+}
