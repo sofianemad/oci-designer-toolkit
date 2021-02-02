@@ -44,8 +44,99 @@ class ApplicationView extends OkitArtefactView {
     */
     loadProperties() {
         const self = this;
-        $(jqId(PROPERTIES_PANEL)).load("propertysheets/application.html", () => {loadPropertiesSheet(self.artefact);});
+        $(jqId(PROPERTIES_PANEL)).load("propertysheets/application.html", () => {
+            console.info("Loading Applications from EMDS")
+            self.loadApplication();
+            loadPropertiesSheet(self.artefact);
+        });
     }
+
+    loadApplication() {
+        const self = this;
+        const app_select = $(jqId('application_id'));
+        $(app_select).empty();
+        let applications = emds.applications.filter((app, index, self) => self.findIndex(t =>
+            t.app_name === app.app_name &&
+            t.appln_id === app.appln_id) === index);
+        for (let app of applications) {
+            app_select.append($('<option>').attr('value', app.appln_id).text(app.app_name));
+        }
+        $("#app_id_display").text($("#application_id").val());
+        self.loadEnvironments($("#application_id").val());
+        app_select.on('change', () => {
+            $("#app_id_display").text($("#application_id").val());
+            self.loadEnvironments($("#application_id").val());
+        });
+        $("#application_id").val(this.application_id);
+        $("#app_id_display").text(this.application_id);
+        this.loadEnvironments(this.application_id);
+    }
+
+
+    loadEnvironments(app_id) {
+        const self = this;
+        console.info("app id " + app_id)
+        const env_select = $(jqId('environment_name'));
+        $(env_select).empty();
+        let applications = emds.applications.filter((app, index, self)  => self.findIndex(t =>
+            app.appln_id === parseInt(app_id) &&
+            t.appln_id === app.appln_id &&
+            t.environment_name === app.environment_name) === index);
+        console.info("Filter For ENV Name");
+        for (let app of applications) {
+            env_select.append($('<option>').attr('value', app.environment_name).text(app.environment_name));
+        }
+        self.loadEnvironmentType(app_id, $('#environment_name').val());
+        env_select.on('change', () => {
+            self.loadEnvironmentType(app_id, $('#environment_name').val());
+        });
+
+    }
+
+    loadEnvironmentType(app_id, environment_name) {
+        const self = this;
+        console.info("app id and env name " + app_id + " " + environment_name);
+        const env_type_select = $(jqId('environment_type'));
+        $(env_type_select).empty();
+        let applications = emds.applications.filter((app, index, self)  => self.findIndex(t =>
+            app.appln_id === parseInt(app_id) &&
+            app.environment_name === environment_name &&
+            t.appln_id === app.appln_id &&
+            t.environment_name === app.environment_name &&
+            t.environment_type === app.environment_type) === index);
+        for (let app of applications) {
+            console.info("env types " + app.environment_type);
+            env_type_select.append($('<option>').attr('value', app.environment_type).text(app.environment_type));
+        }
+        self.loadTenancy(app_id, environment_name, $('#environment_type').val());
+        env_type_select.on('change', () => {
+            self.loadTenancy(app_id, environment_name, $('#environment_type').val());
+        });
+
+    }
+
+    loadTenancy(app_id, environment_name, environment_type) {
+        const self = this;
+        console.info("app id, env name, env type " + app_id + " " + environment_name + " " + environment_type);
+        const tenancy_select = $(jqId('tenancy'));
+        $(tenancy_select).empty();
+        let applications = emds.applications.filter((app, index, self)  => self.findIndex(t =>
+            app.appln_id === parseInt(app_id) &&
+            app.environment_name === environment_name &&
+            app.environment_type === environment_type &&
+            t.appln_id === app.appln_id &&
+            t.environment_name === app.environment_name &&
+            t.environment_type === app.environment_type &&
+            t.tenancy === app.tenancy) === index);
+
+        for (let app of applications) {
+            console.info("tenancies " + app.tenancy);
+            tenancy_select.append($('<option>').attr('value', app.tenancy).text(app.tenancy));
+        }
+        tenancy_select.on('change', () => {});
+
+    }
+
     /*
     ** Load and display Value Proposition
     */

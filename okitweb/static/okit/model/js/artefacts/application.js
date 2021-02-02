@@ -15,16 +15,15 @@ class Application extends OkitArtifact {
         super(okitjson);
         // Configure default values
         this.display_name = this.generateDefaultName(okitjson.applications.length + 1);
-        this.compartment_id = data.parent_id;
-        this.app_id = null;
-        this.app_short_name = null;
-	this.app_tenancy = null;
-	this.app_description = null;
-	this.app_lob = null;
-	this.app_owner = null;
-	this.app_legal_hold = null;
-	this.app_cost_center = null;
-	this.app_environment = null;
+        this.application_id = '';
+        this.environment_name = '';
+        this.environment_type = '';
+        this.tenancy = '';
+        this.capacity_owner = '';
+        this.service_owner = '';
+        this.user_name = '';
+        this.created_by = '';
+
 
 	/*
         ** TODO: Add Resource / Artefact specific parameters and default

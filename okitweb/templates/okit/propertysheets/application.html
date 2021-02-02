@@ -2,22 +2,24 @@
 ** Copyright (c) 2020, Oracle and/or its affiliates.
 ** Licensed under the Universal Permissive License v 1.0 as shown at https://oss.oracle.com/licenses/upl.
 -->
-{% extends "okit/propertysheets/base_property_sheet.html" %}
+{% extends "okit/propertysheets/application_property_sheet.html" %}
 {% block title_block %}Application{% endblock %}
 {% block required_properties_table_rows_block %}
-	<div class='tr'><div class='td'>Applicaiton ID</div><div class='td'><input type="text" id="app_id" name="app_id" class="okit-property-value"></div></div>
-        <div class='tr'><div class='td'>Application Short Name</div><div class='td'><input type="text" id="app_short_name" name="app_short_name" class="okit-property-value"></div></div>
-        <div class='tr'><div class='td'>Applicaiton Tenancy</div><div class='td'><input type="text" id="app_tenancy" name="app_tenancy" class="okit-property-value"></div></div>
+	<div class='tr'><div class='td'>Application ID</div><div class='td' id="app_id_display"></div></div>
+	<div class='tr'><div class='td'>Environment Name</div><div class='td'>
+		<select id="environment_name" class="okit-property-value" name="environment_name"></select>
+	</div></div>
+	<div class='tr'><div class='td'>Environment Type</div><div class='td'>
+		<select id="environment_type" class="okit-property-value" name="environment_type"></select>
+	</div></div>
+	<div class='tr'><div class='td'>Tenancy</div><div class='td'>
+		<select id="tenancy" class="okit-property-value" name="tenancy"></select>
+	</div></div>
 {% endblock %}
 {% block optional_properties_table_rows_block %}
-        <div class='tr'><div class='td'>Applicaiton Description</div><div class='td'><input type="text" id="app_description" name="app_description" class="okit-property-value"></div></div>
-        <div class='tr'><div class='td'>Applicaiton LOB</div><div class='td'><input type="text" id="app_lob" name="app_lob" class="okit-property-value"></div></div>
-        <div class='tr'><div class='td'>Applicaiton Owner</div><div class='td'><input type="text" id="app_owner" name="app_owner" class="okit-property-value"></div></div>
-	<div class='tr'><div class='td'>Availability Legal Hold</div><div class='td'><select id="app_legal_hold" class="okit-property-value">
-		<option value="1" selected="selected">Yes</option>
-		<option value="2">No</option>
-	</select></div></div>
-	<div class='tr'><div class='td'>Applicaiton Cost Center</div><div class='td'><input type="text" id="app_cost_center" name="app_cost_center" class="okit-property-value"></div></div>
-	<div class='tr'><div class='td'>Applicaiton Environment</div><div class='td'><input type="text" id="app_environment" name="app_environment" class="okit-property-value"></div></div>
-	{% endblock %}
+	<div class='tr'><div class='td'>Capacity Owner</div><div class='td' id="capacity_owner"></div></div>
+	<div class='tr'><div class='td'>Service Owner</div><div class='td' id="service_owner"></div></div>
+	<div class='tr'><div class='td'>User</div><div class='td' id="user"></div></div>
+	<div class='tr'><div class='td'>Created By</div><div class='td' id="created_by"></div></div>
+{% endblock %}
 {% block optional_properties_block %}{% endblock %}
