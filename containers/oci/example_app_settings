@@ -1,0 +1,7 @@
+### Example Application Config File
+### All values must be changed to match you connection information.
+[LOGOUT_URL]
+value=<url>
+
+[REMOTE_USER]
+value=<REMOTE_USER>
