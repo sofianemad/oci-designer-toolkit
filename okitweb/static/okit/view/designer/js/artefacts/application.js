@@ -51,9 +51,11 @@ class ApplicationView extends OkitArtefactView {
         });
     }
 
+
     loadApplication() {
         const self = this;
         const app_select = $(jqId('application_id'));
+        let compartment_naming = '';
         $(app_select).empty();
         let applications = emds.applications.filter((app, index, self) => self.findIndex(t =>
             t.app_name === app.app_name &&
@@ -62,20 +64,27 @@ class ApplicationView extends OkitArtefactView {
             app_select.append($('<option>').attr('value', app.appln_id).text(app.app_name));
         }
         $("#app_id_display").text($("#application_id").val());
-        self.loadEnvironments($("#application_id").val());
         app_select.on('change', () => {
             $("#app_id_display").text($("#application_id").val());
             self.loadEnvironments($("#application_id").val());
+            self.loadData($("#application_id").val());
+
+            compartment_naming = `css-${self.app_org.toLowerCase()}-${self.app_lob.toLowerCase()}-purpose`.replace(/ /g,"_");
+            this.getOkitJson().getCompartment(this.compartment_id).display_name = compartment_naming;
+            this.getOkitJson().getCompartment(this.compartment_id).name = compartment_naming;
+            this.artefact.display_name=$("#application_id option:selected").text();
         });
+
         $("#application_id").val(this.application_id);
         $("#app_id_display").text(this.application_id);
         this.loadEnvironments(this.application_id);
+        this.loadData(this.application_id);
+
     }
 
 
     loadEnvironments(app_id) {
         const self = this;
-        console.info("app id " + app_id)
         const env_select = $(jqId('environment_name'));
         $(env_select).empty();
         let applications = emds.applications.filter((app, index, self)  => self.findIndex(t =>
@@ -90,12 +99,12 @@ class ApplicationView extends OkitArtefactView {
         env_select.on('change', () => {
             self.loadEnvironmentType(app_id, $('#environment_name').val());
         });
+        self.artefact.environment_name=$("#environment_name option:first").text();
 
     }
 
     loadEnvironmentType(app_id, environment_name) {
         const self = this;
-        console.info("app id and env name " + app_id + " " + environment_name);
         const env_type_select = $(jqId('environment_type'));
         $(env_type_select).empty();
         let applications = emds.applications.filter((app, index, self)  => self.findIndex(t =>
@@ -112,13 +121,13 @@ class ApplicationView extends OkitArtefactView {
         env_type_select.on('change', () => {
             self.loadTenancy(app_id, environment_name, $('#environment_type').val());
         });
+        self.artefact.environment_type=$("#environment_type option:first").text();
 
     }
 
     loadTenancy(app_id, environment_name, environment_type) {
         const self = this;
-        console.info("app id, env name, env type " + app_id + " " + environment_name + " " + environment_type);
-        const tenancy_select = $(jqId('tenancy'));
+        const tenancy_select = $(jqId('tenancy_id'));
         $(tenancy_select).empty();
         let applications = emds.applications.filter((app, index, self)  => self.findIndex(t =>
             app.appln_id === parseInt(app_id) &&
@@ -131,9 +140,67 @@ class ApplicationView extends OkitArtefactView {
 
         for (let app of applications) {
             console.info("tenancies " + app.tenancy);
-            tenancy_select.append($('<option>').attr('value', app.tenancy).text(app.tenancy));
+            tenancy_select.append($('<option>').attr('value', app.tenancy_id).text(app.tenancy));
         }
-        tenancy_select.on('change', () => {});
+        tenancy_select.on('change', () => {
+            this.artefact.tenancy=$("#tenancy_id option:selected").text();
+        });
+        self.artefact.tenancy_id=$("#tenancy_id option:first").val();
+        self.artefact.tenancy=$("#tenancy_id option:first").text();
+
+    }
+
+    loadData(app_id) {
+        const self = this;
+
+        let app_data = emds.applications.filter(app => app.appln_id === parseInt(app_id));
+
+        let app_lob = app_data.find(app => app.lob != null);
+        let app_org = app_data.find(app => app.org != null);
+        let app_capacity_owner = app_data.find(app => app.capacity_owner != null);
+        let app_service_owners = app_data.find(app => app.service_owners != null);
+        let app_created_by = app_data.find(app => app.created_by != null);
+
+        if(app_lob) {
+            $("#app_lob").text(app_lob.lob);
+            self.artefact.app_lob=app_lob.lob;
+            console.info(`Data: ${app_lob.lob}`);
+        }else{
+            $("#app_lob").text("");
+            self.artefact.app_lob="";
+        }
+        if(app_org) {
+            $("#app_org").text(app_org.org);
+                self.artefact.app_org=app_org.org;
+                console.info(`Data: ${app_org.org}`);
+            }else{
+                $("#app_org").text("");
+                self.artefact.app_org="";
+        }
+        if(app_capacity_owner) {
+            $("#capacity_owner").text(app_capacity_owner.capacity_owner);
+            self.artefact.capacity_owner=app_capacity_owner.capacity_owner;
+            console.info(`Data: ${app_capacity_owner.capacity_owner}`);
+        }else{
+            $("#capacity_owner").text("");
+            self.artefact.capacity_owner="";
+        }
+        if(app_service_owners) {
+            $("#service_owner").text(app_service_owners.service_owner);
+            self.artefact.service_owner=app_service_owners.service_owner;
+            console.info(`Data: ${app_service_owners.service_owner}`);
+        }else{
+            $("#service_owner").text("");
+            self.artefact.service_owner="";
+        }
+        if(app_created_by) {
+            $("#created_by").text(app_created_by.created_by);
+            self.artefact.created_by=app_created_by.created_by;
+            console.info(`Data: ${app_created_by.created_by}`);
+        }else{
+            $("#created_by").text("");
+            self.artefact.created_by="";
+        }
 
     }
 

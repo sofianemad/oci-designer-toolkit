@@ -50,6 +50,7 @@ class OCIGenerator(object):
         self.jinja2_environment = jinja2.Environment(loader=self.template_loader, trim_blocks=True, lstrip_blocks=True, autoescape=True)
         # Initialise working variables
         self.id_name_map = {}
+        self.application_tags = {}
 
     def initialiseJinja2Variables(self):
         # Copy common variables
@@ -126,6 +127,17 @@ class OCIGenerator(object):
         self.create_sequence.append(jinja2_template.render(self.jinja2_variables))
         logger.debug(self.create_sequence[-1])
 
+        #Application objects
+        for application in self.visualiser_json.get('applications', []):
+            application_tags = self.application_tags.get(application["compartment_id"], {})
+            tags = application_tags.get("Application", {})
+            tags["AppID"] = application["application_id"]
+            tags["ApplicationName"] = application["display_name"]
+            tags["EnvironmentName"] = application["environment_name"]
+            tags["EnvironmentType"] = application["environment_type"]
+            application_tags["Application"]=tags
+            self.application_tags[application["compartment_id"]]=application_tags
+
         # Process keys within the input json file
         # - Compartment Sub Components
         # -- Compartments
@@ -139,9 +151,6 @@ class OCIGenerator(object):
         # -- Virtual Cloud Networks
         for virtual_cloud_network in self.visualiser_json.get('virtual_cloud_networks', []):
             self.renderVirtualCloudNetwork(virtual_cloud_network)
-        # -- Applications
-        for application in self.visualiser_json.get('applications', []):
-            self.renderApplication(application)
         # -- Block Storage Volumes
         for block_storage_volume in self.visualiser_json.get('block_storage_volumes', []):
             self.renderBlockStorageVolume(block_storage_volume)
@@ -285,45 +294,6 @@ class OCIGenerator(object):
         self.create_sequence.append(jinja2_template.render(self.jinja2_variables))
         logger.debug(self.create_sequence[-1])
         return
-
-    def renderApplication(self, application):
-        # Reset Variables
-        self.initialiseJinja2Variables()
-        # Read Data
-        standardisedName = self.standardiseResourceName(application['display_name'])
-        self.jinja2_variables['resource_name'] = resourceName
-        self.jinja2_variables['output_name'] = application['display_name']
-        # Process Application
-        logger.info('Processing Applicaiton Information{0!s:s}'.format(standardisedName))
-        # -- Define Variables
-        # --- Required
-        # ---- Compartment Id
-        self.jinja2_variables["compartment_id"] = self.formatJinja2IdReference(self.standardiseResourceName(self.id_name_map[application['compartment_id']]))
-        # ---- Display Name
-        self.addJinja2Variable("display_name", application["display_name"], standardisedName)
-        # ---- Application Id
-        self.addJinja2Variable("app_id", application["app_id"], standardisedName)
-        # ---- Applicaton Short Name
-        self.addJinja2Variable("app_short_name", application["app_shoart_name"], standardisedName)
-        # --- Optional
-        # ---- Application Description
-        self.addJinja2Variable("app_description", application["app_description"], standardisedName)
-        # ---- Application LOB
-        self.addJinja2Variable("app_lob", application["app_lob"], standardisedName)
-        # ---- Application Owner
-        self.addJinja2Variable("app_owner", application["app_owner"], standardisedName)
-        # ---- Application Legal Hold
-        self.addJinja2Variable("app_legal_hold", application["app_legal_hold"], standardisedName)
-        # ---- Application Cost Center
-        self.addJinja2Variable("app_cost_center", application["app_cost_center"], standardisedName)
-        # ---- Application Environment
-        self.addJinja2Variable("app_environment", application["app_environment"], standardisedName)
-        # -- Render Template
-        jinja2_template = self.jinja2_environment.get_template("application.jinja2")
-        self.create_sequence.append(jinja2_template.render(self.jinja2_variables))
-        logger.debug(self.create_sequence[-1])
-        return
-
 
 
 
@@ -1705,6 +1675,8 @@ class OCIGenerator(object):
 
     def renderDefinedTags(self, artifact):
         tags = artifact.get("defined_tags", {})
+        tags.update(self.application_tags.get(artifact["compartment_id"],{}))
+        logger.info(tags)
         if len(tags.keys()) > 0:
             if self.use_vars:
                 standardisedName = self.standardiseResourceName(artifact.get('display_name', artifact.get('name', '')))

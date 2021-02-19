@@ -13,10 +13,12 @@
 		<select id="environment_type" class="okit-property-value" name="environment_type"></select>
 	</div></div>
 	<div class='tr'><div class='td'>Tenancy</div><div class='td'>
-		<select id="tenancy" class="okit-property-value" name="tenancy"></select>
+		<select id="tenancy_id" class="okit-property-value" name="tenancy_id"></select>
 	</div></div>
 {% endblock %}
 {% block optional_properties_table_rows_block %}
+	<div class='tr'><div class='td'>LOB</div><div class='td' id="app_lob"></div></div>
+	<div class='tr'><div class='td'>Org</div><div class='td' id="app_org"></div></div>
 	<div class='tr'><div class='td'>Capacity Owner</div><div class='td' id="capacity_owner"></div></div>
 	<div class='tr'><div class='td'>Service Owner</div><div class='td' id="service_owner"></div></div>
 	<div class='tr'><div class='td'>User</div><div class='td' id="user"></div></div>

@@ -19,10 +19,13 @@ class Application extends OkitArtifact {
         this.environment_name = '';
         this.environment_type = '';
         this.tenancy = '';
+        this.tenancy_id='';
         this.capacity_owner = '';
         this.service_owner = '';
         this.user_name = '';
         this.created_by = '';
+        this.app_lob = '';
+        this.app_org = '';
 
 
 	/*

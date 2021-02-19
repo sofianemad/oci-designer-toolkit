@@ -75,6 +75,8 @@ class OCITerraformGenerator(OCIGenerator):
 
     def renderDefinedTags(self, artifact):
         defined_tags = artifact.get("defined_tags", {})
+        defined_tags.update(self.application_tags.get(artifact["compartment_id"],{}))
+        logger.info(defined_tags)
         if len(defined_tags.keys()) > 0:
             definedtags = {}
             for namespace, tags in defined_tags.items():
