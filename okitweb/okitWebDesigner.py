@@ -21,6 +21,8 @@ import urllib
 import giturlparse
 import glob
 import ast
+import requests
+from datetime import datetime
 from git import Repo
 from flask import Blueprint
 from flask import render_template
@@ -313,16 +315,58 @@ def generate(language, destination):
                 git_url, git_branch = request.json['git_repository'].split('*')
                 parsed_git_url = giturlparse.parse(git_url)
                 generate_git_dir = os.path.abspath(os.path.join(bp.static_folder, 'git'))
-                logger.info(generate_git_dir)
+                default_commit_msg = "commit changes from okit:"
+
+                app_settings = readApplicationSettings()
+                user = request.headers.get(app_settings.get('REMOTE_USER'), '')
+                if user:
+                    method_func = getattr(requests, 'get')
+                    url = "https://" + parsed_git_url.resource + "/api/v4/projects?search=" + parsed_git_url.name
+                    kwargs = {"url": url, "proxies": {'http': None, 'https': None},
+                              "headers": {"Authorization": "Bearer %s" % app_settings.get('TOKEN')}}
+                    response = method_func(**kwargs)
+                    try:
+                        project_data = response.json()
+                        project_id = None
+
+                        for each_project in project_data:
+                            if each_project['path'] == parsed_git_url.name and \
+                                    each_project['namespace']['path'] == parsed_git_url.owner:
+                                project_id = each_project['id']
+                                break
+
+                        url = "https://" + parsed_git_url.resource + "/api/v4/projects/" + str(project_id) + "/members/all?page=1&per_page=200"
+                        kwargs['url'] = url
+                        response = method_func(**kwargs)
+                        member_data = response.json()
+                        valid_user_flag = False
+                        for each_member in member_data:
+                            if each_member['email'] == user:
+                                valid_user_flag = True
+                                break
+                        if not valid_user_flag:
+                            return "No permission to export templates to repository"
+
+                    except:
+                        return "Error with API"
+
+                    default_commit_msg = "commit changes from okit by " + user + ":"
+                    git_dir_name = user.split('@')[0]
+                    generate_git_dir = os.path.abspath(os.path.join(generate_git_dir, git_dir_name))
+
                 if not os.path.exists(generate_git_dir):
                     os.makedirs(generate_git_dir, exist_ok=True)
                 git_repo_dir = os.path.abspath(os.path.join(generate_git_dir, parsed_git_url.name))
                 if os.path.exists(git_repo_dir):
                     repo = Repo(git_repo_dir)
+                    repo.git.checkout(git_branch)
                     repo.remotes.origin.pull()
                 else:
-                    repo = Repo.clone_from(git_url, git_repo_dir, branch=git_branch, no_single_branch=True)
+                    repo = Repo.clone_from(git_url, git_repo_dir, branch=git_branch)
                     repo.remotes.origin.pull()
+
+                git_new_branch = 'app_' + datetime.now().strftime('%Y%m%d%H%M%S')
+                repo.git.checkout('-b', git_new_branch)
                 destination_dir = os.path.abspath(os.path.join(git_repo_dir, request.json['git_repository_filename']))
             else:
                 destination_dir = tempfile.mkdtemp();
@@ -341,8 +385,17 @@ def generate(language, destination):
             if destination == 'git':
                 git_commit_msg = request.json['git_repository_commitmsg']
                 repo.index.add(destination_dir)
-                repo.index.commit("commit changes from okit:" + git_commit_msg)
-                repo.remotes.origin.push(git_branch)
+                repo.index.commit(default_commit_msg + git_commit_msg)
+                repo.remotes.origin.push(git_new_branch)
+
+                if user:
+                    url = "https://" + parsed_git_url.resource + "/api/v4/projects/" + str(project_id) + "/merge_requests"
+                    post_data = {"id": project_id, "source_branch": git_new_branch, "target_branch": git_branch,
+                                 "title": "OKIT MR By: " + user}
+                    kwargs['json'] = post_data
+                    kwargs['url'] = url
+                    method_func = getattr(requests, 'post')
+                    response = method_func(**kwargs)
                 return language.capitalize()+" files successfully uploaded to GIT Repository"
             else:
                 zipname = generator.createZipArchive(os.path.join(destination_dir, language), "/tmp/okit-{0:s}".format(str(language)))
