@@ -5,3 +5,6 @@ value=<url>
 
 [REMOTE_USER]
 value=<REMOTE_USER>
+
+[TOKEN]
+value=<token>
