@@ -302,6 +302,44 @@ def propertysheets(sheet):
 def valueproposition(sheet):
     return render_template('okit/valueproposition/{0:s}'.format(sheet))
 
+def getrepositoryprojectid(user, parsed_git_url, token):
+    method_func = getattr(requests, 'get')
+    url = "https://" + parsed_git_url.resource + "/api/v4/projects?search=" + parsed_git_url.name
+    kwargs = {"url": url, "proxies": {'http': None, 'https': None},"headers": {"Authorization": "Bearer %s" % token}}
+    response = method_func(**kwargs)
+    try:
+        project_data = response.json()
+        project_id = None
+
+        for each_project in project_data:
+            if each_project['path']==parsed_git_url.name and each_project['namespace']['path']==parsed_git_url.owner:
+                project_id = each_project['id']
+                break
+        return project_id
+    except:
+        return None
+
+def validateuserforproject(user, project_id, parsed_git_url, token):
+    method_func = getattr(requests, 'get')
+    url = "https://" + parsed_git_url.resource + "/api/v4/projects/" + str(project_id) + "/members/all?page=1&per_page=200"
+    kwargs = {"url": url, "proxies": {'http': None, 'https': None}, "headers": {"Authorization": "Bearer %s" % token}}
+    response = method_func(**kwargs)
+    member_data = response.json()
+    valid_user_flag = False
+    for each_member in member_data:
+        if each_member['email'] == user:
+            valid_user_flag = True
+            break
+    return valid_user_flag
+
+def creategitmergerequest(parsed_git_url, project_id, git_new_branch, git_branch, user, token):
+    url = "https://" + parsed_git_url.resource + "/api/v4/projects/" + str(project_id) + "/merge_requests"
+    post_data = {"id": project_id, "source_branch": git_new_branch, "target_branch": git_branch,
+                 "title": "OKIT MR By: " + user}
+    kwargs = {"url": url, "proxies": {'http': None, 'https': None}, "headers": {"Authorization": "Bearer %s" % token}, "json": post_data}
+    method_func = getattr(requests, 'post')
+    response = method_func(**kwargs)
+    return response
 
 @bp.route('/generate/<string:language>/<string:destination>', methods=(['GET', 'POST']))
 def generate(language, destination):
@@ -320,35 +358,12 @@ def generate(language, destination):
                 app_settings = readApplicationSettings()
                 user = request.headers.get(app_settings.get('REMOTE_USER'), '')
                 if user:
-                    method_func = getattr(requests, 'get')
-                    url = "https://" + parsed_git_url.resource + "/api/v4/projects?search=" + parsed_git_url.name
-                    kwargs = {"url": url, "proxies": {'http': None, 'https': None},
-                              "headers": {"Authorization": "Bearer %s" % app_settings.get('TOKEN')}}
-                    response = method_func(**kwargs)
-                    try:
-                        project_data = response.json()
-                        project_id = None
-
-                        for each_project in project_data:
-                            if each_project['path'] == parsed_git_url.name and \
-                                    each_project['namespace']['path'] == parsed_git_url.owner:
-                                project_id = each_project['id']
-                                break
-
-                        url = "https://" + parsed_git_url.resource + "/api/v4/projects/" + str(project_id) + "/members/all?page=1&per_page=200"
-                        kwargs['url'] = url
-                        response = method_func(**kwargs)
-                        member_data = response.json()
-                        valid_user_flag = False
-                        for each_member in member_data:
-                            if each_member['email'] == user:
-                                valid_user_flag = True
-                                break
-                        if not valid_user_flag:
-                            return "No permission to export templates to repository"
-
-                    except:
+                    project_id = getrepositoryprojectid(user, parsed_git_url, app_settings.get('TOKEN'))
+                    if not project_id:
                         return "Error with API"
+                    valid_user = validateuserforproject(user, project_id, parsed_git_url, app_settings.get('TOKEN'))
+                    if not valid_user:
+                        return "No permission to export templates to repository"
 
                     default_commit_msg = "commit changes from okit by " + user + ":"
                     git_dir_name = user.split('@')[0]
@@ -389,13 +404,7 @@ def generate(language, destination):
                 repo.remotes.origin.push(git_new_branch)
 
                 if user:
-                    url = "https://" + parsed_git_url.resource + "/api/v4/projects/" + str(project_id) + "/merge_requests"
-                    post_data = {"id": project_id, "source_branch": git_new_branch, "target_branch": git_branch,
-                                 "title": "OKIT MR By: " + user}
-                    kwargs['json'] = post_data
-                    kwargs['url'] = url
-                    method_func = getattr(requests, 'post')
-                    response = method_func(**kwargs)
+                    creategitmergerequest(parsed_git_url, project_id, git_new_branch, git_branch, user, token)
                 return language.capitalize()+" files successfully uploaded to GIT Repository"
             else:
                 zipname = generator.createZipArchive(os.path.join(destination_dir, language), "/tmp/okit-{0:s}".format(str(language)))
