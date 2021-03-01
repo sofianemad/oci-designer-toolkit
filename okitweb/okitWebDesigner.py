@@ -484,7 +484,7 @@ def saveas(savetype):
                 repo.index.add(fullpath)
                 repo.index.commit(default_commit_msg + git_commit_msg)
                 repo.remotes.origin.push(git_branch)
-                return filename
+                return "Json file successfully uploaded to GIT Repository"
         except Exception as e:
             logger.exception(e)
             return str(e), 500
