@@ -376,6 +376,7 @@ function handleSaveToGit(e) {
             contentType: 'application/json',
             data: JSON.stringify(request_json),
             success: function (resp) {
+                alert(resp)
                 console.info('Response : ' + resp);
             },
             error: function (xhr, status, error) {
