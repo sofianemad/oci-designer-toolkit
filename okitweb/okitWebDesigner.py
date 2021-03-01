@@ -404,7 +404,7 @@ def generate(language, destination):
                 repo.remotes.origin.push(git_new_branch)
 
                 if user:
-                    creategitmergerequest(parsed_git_url, project_id, git_new_branch, git_branch, user, token)
+                    creategitmergerequest(parsed_git_url, project_id, git_new_branch, git_branch, user, app_settings.get('TOKEN'))
                 return language.capitalize()+" files successfully uploaded to GIT Repository"
             else:
                 zipname = generator.createZipArchive(os.path.join(destination_dir, language), "/tmp/okit-{0:s}".format(str(language)))
