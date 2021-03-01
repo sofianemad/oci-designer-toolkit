@@ -451,6 +451,20 @@ def saveas(savetype):
                     filename = os.path.join(request.json['git_repository_directory'], filename)
                 parsed_git_url = giturlparse.parse(git_url)
                 template_git_dir = os.path.abspath(os.path.join(bp.static_folder, 'templates', 'git'))
+                default_commit_msg = "commit changes from okit:"
+                app_settings = readApplicationSettings()
+                user = request.headers.get(app_settings.get('REMOTE_USER'), '')
+                if user:
+                    project_id = getrepositoryprojectid(user, parsed_git_url, app_settings.get('TOKEN'))
+                    if not project_id:
+                        return "Error with API"
+                    valid_user = validateuserforproject(user, project_id, parsed_git_url, app_settings.get('TOKEN'))
+                    if not valid_user:
+                        return "No permission to export templates to repository"
+                    default_commit_msg = "commit changes from okit by " + user + ":"
+                    git_dir_name = user.split('@')[0]
+                    template_git_dir = os.path.abspath(os.path.join(template_git_dir, git_dir_name))
+
                 if not os.path.exists(template_git_dir):
                     os.makedirs(template_git_dir, exist_ok=True)
                 git_repo_dir = os.path.abspath(os.path.join(template_git_dir, parsed_git_url.name))
@@ -468,7 +482,7 @@ def saveas(savetype):
                 del request.json['git_repository_commitmsg']
                 writeJsonFile(request.json, fullpath)
                 repo.index.add(fullpath)
-                repo.index.commit("commit changes from okit:" + git_commit_msg)
+                repo.index.commit(default_commit_msg + git_commit_msg)
                 repo.remotes.origin.push(git_branch)
                 return filename
         except Exception as e:
