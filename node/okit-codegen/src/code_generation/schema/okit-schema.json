@@ -1,0 +1,21 @@
+{
+    "security_list": {
+        "type": "object",
+        "subtype": "",
+        "attributes": {
+            "id": {
+                "type": "string",
+                "subtype": "",
+                "required": true
+            },
+            "egress_rules": {
+                "type": "list",
+                "subtype": "object",
+                "required": false,
+                "attributes": {
+                    
+                }
+            }
+        }
+    }
+}
