@@ -12,15 +12,12 @@
 ** === Auto Generated Code All Edits Will Be Lost During Regeneration ===
 ** ======================================================================
 **
-** Generated : 07/05/2021 16:58:41
+** Generated : 24/05/2021 16:08:37
 **
 */
         
 export { OkitResourceModel } from './okit_resource_model.js'
-export { Instance } from './instance/instance.js'
-export { RouteTable } from './route_table/route_table.js'
 export { SecurityList } from './security_list/security_list.js'
-export { Subnet } from './subnet/subnet.js'
 export { Vcn } from './vcn/vcn.js'
 export { Compartment } from './compartment/compartment.js'
     

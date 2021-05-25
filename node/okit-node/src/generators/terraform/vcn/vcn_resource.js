@@ -12,7 +12,7 @@
 ** === Auto Generated Code All Edits Will Be Lost During Regeneration ===
 ** ======================================================================
 **
-** Generated : 07/05/2021 16:58:57
+** Generated : 25/05/2021 10:59:32
 **
 */
 
@@ -20,102 +20,60 @@ import { OkitResourceTerraform } from '../okit_resource_terraform.js'
 
 class VcnResource extends OkitResourceTerraform {
     static model = {
-        cidr_block: {
+        type: {
                 required: false,
                 editable: true,
                 type: 'datalist',
-                label: 'Cidr Block'
+                label: 'Type'
             },
-        cidr_blocks: {
+        subtype: {
                 required: false,
                 editable: true,
                 type: 'datalist',
-                label: 'Cidr Blocks'
+                label: 'Subtype'
             },
-        compartment_id: {
+        attributes: {
                 required: false,
                 editable: true,
                 type: 'datalist',
-                label: 'Compartment Id'
-            },
-        default_dhcp_options_id: {
-                required: false,
-                editable: true,
-                type: 'datalist',
-                label: 'Default Dhcp Options Id'
-            },
-        default_route_table_id: {
-                required: false,
-                editable: true,
-                type: 'datalist',
-                label: 'Default Route Table Id'
-            },
-        default_security_list_id: {
-                required: false,
-                editable: true,
-                type: 'datalist',
-                label: 'Default Security List Id'
-            },
-        defined_tags: {
-                required: false,
-                editable: true,
-                type: 'datalist',
-                label: 'Defined Tags'
-            },
-        display_name: {
-                required: false,
-                editable: true,
-                type: 'datalist',
-                label: 'Display Name'
-            },
-        dns_label: {
-                required: false,
-                editable: true,
-                type: 'datalist',
-                label: 'Dns Label'
-            },
-        freeform_tags: {
-                required: false,
-                editable: true,
-                type: 'datalist',
-                label: 'Freeform Tags'
-            },
-        id: {
-                required: false,
-                editable: true,
-                type: 'datalist',
-                label: 'Id'
-            },
-        ipv6cidr_block: {
-                required: false,
-                editable: true,
-                type: 'datalist',
-                label: 'Ipv6cidr Block'
-            },
-        ipv6public_cidr_block: {
-                required: false,
-                editable: true,
-                type: 'datalist',
-                label: 'Ipv6public Cidr Block'
-            },
-        is_ipv6enabled: {
-                required: false,
-                editable: true,
-                type: 'datalist',
-                label: 'Is Ipv6enabled'
-            },
-        vcn_domain_name: {
-                required: false,
-                editable: true,
-                type: 'datalist',
-                label: 'Vcn Domain Name'
+                label: 'Attributes'
             },
     }
 
     constructor(resource) {
         super(resource)
         this.tf_resource_name = 'oci_core_vcn'
+        this.resource_list = 'vcn'
     }
+
+    toResource() {
+        let cmd = []
+        cmd.push('resource "oci_core_vcn" "${this.resource_name}" {')
+        cmd.push('    #Required')
+        cmd.push(`    compartment_id = ${this.varValOrRef('compartment_id', this.resource.compartment_id)}`)
+        cmd.push('    #Optional')
+        cmd.push(`    cidr_block = ${this.varValOrRef('cidr_block', this.resource.cidr_block)}`)
+
+        cmd.push(`    defined_tags = ${this.varValOrRef('defined_tags', this.resource.defined_tags)}`)
+        cmd.push(`    display_name = ${this.varValOrRef('display_name', this.resource.display_name)}`)
+        cmd.push(`    dns_label = ${this.varValOrRef('dns_label', this.resource.dns_label)}`)
+        cmd.push(`    freeform_tags = ${this.varValOrRef('freeform_tags', this.resource.freeform_tags)}`)
+        cmd.push(`    ipv6cidr_block = ${this.varValOrRef('ipv6cidr_block', this.resource.ipv6cidr_block)}`)
+        cmd.push(`    is_ipv6enabled = ${this.varValOrRef('is_ipv6enabled', this.resource.is_ipv6enabled)}`)
+        cmd.push('    #Tags')
+        cmd.push('}')
+        return cmd.join('\n')
+    }
+
+    toData() {
+        let cmd = []
+        cmd.push('data "oci_core_vcn" "${this.resource_name}" {')
+        cmd.push('    #Required')
+        cmd.push('    vcn_id = ${this.resource_id}')
+        cmd.push('}')
+        return cmd.join('\n')
+   }
+
 }
 
 export default VcnResource

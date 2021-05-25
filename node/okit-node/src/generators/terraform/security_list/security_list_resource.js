@@ -12,7 +12,7 @@
 ** === Auto Generated Code All Edits Will Be Lost During Regeneration ===
 ** ======================================================================
 **
-** Generated : 07/05/2021 16:58:57
+** Generated : 25/05/2021 10:59:32
 **
 */
 
@@ -20,60 +20,58 @@ import { OkitResourceTerraform } from '../okit_resource_terraform.js'
 
 class SecurityListResource extends OkitResourceTerraform {
     static model = {
-        compartment_id: {
+        type: {
                 required: false,
                 editable: true,
                 type: 'datalist',
-                label: 'Compartment Id'
+                label: 'Type'
             },
-        defined_tags: {
+        subtype: {
                 required: false,
                 editable: true,
                 type: 'datalist',
-                label: 'Defined Tags'
+                label: 'Subtype'
             },
-        display_name: {
+        attributes: {
                 required: false,
                 editable: true,
                 type: 'datalist',
-                label: 'Display Name'
-            },
-        freeform_tags: {
-                required: false,
-                editable: true,
-                type: 'datalist',
-                label: 'Freeform Tags'
-            },
-        id: {
-                required: false,
-                editable: true,
-                type: 'datalist',
-                label: 'Id'
-            },
-        vcn_id: {
-                required: false,
-                editable: true,
-                type: 'datalist',
-                label: 'Vcn Id'
-            },
-        egress_security_rules: {
-                required: false,
-                editable: true,
-                type: 'datalist',
-                label: 'Egress Security Rules'
-            },
-        ingress_security_rules: {
-                required: false,
-                editable: true,
-                type: 'datalist',
-                label: 'Ingress Security Rules'
+                label: 'Attributes'
             },
     }
 
     constructor(resource) {
         super(resource)
         this.tf_resource_name = 'oci_core_security_list'
+        this.resource_list = 'security_list'
     }
+
+    toResource() {
+        let cmd = []
+        cmd.push('resource "oci_core_security_list" "${this.resource_name}" {')
+        cmd.push('    #Required')
+        cmd.push(`    compartment_id = ${this.varValOrRef('compartment_id', this.resource.compartment_id)}`)
+        cmd.push(`    vcn_id = ${this.varValOrRef('vcn_id', this.resource.vcn_id)}`)
+        cmd.push('    #Optional')
+        cmd.push(`    defined_tags = ${this.varValOrRef('defined_tags', this.resource.defined_tags)}`)
+        cmd.push(`    display_name = ${this.varValOrRef('display_name', this.resource.display_name)}`)
+        cmd.push(`    freeform_tags = ${this.varValOrRef('freeform_tags', this.resource.freeform_tags)}`)
+
+
+        cmd.push('    #Tags')
+        cmd.push('}')
+        return cmd.join('\n')
+    }
+
+    toData() {
+        let cmd = []
+        cmd.push('data "oci_core_security_list" "${this.resource_name}" {')
+        cmd.push('    #Required')
+        cmd.push('    security_list_id = ${this.resource_id}')
+        cmd.push('}')
+        return cmd.join('\n')
+   }
+
 }
 
 export default SecurityListResource

@@ -13,6 +13,7 @@ import { OkitData } from 'okit-node/src/data/okit.js'
 import { OkitModelGenerator } from './code_generation/okit_model_generator.js'
 import { OkitPropertiesGenerator } from './code_generation/okit_properties_generator.js'
 import { OkitTerraformGenerator } from './code_generation/okit_terraform_generator.js'
+import { OkitTerraformSchemaImporter } from './schema_import/okit_terraform_schema_importer.js'
 
 const args = process.argv.splice(2)
 
@@ -34,20 +35,29 @@ if (command.toLocaleLowerCase() === 'generate') {
         if (subcommand.toLocaleLowerCase() === 'okit-model-js') generator = new OkitModelGenerator()
         else if (subcommand.toLocaleLowerCase() === 'okit-properties-js') generator = new OkitPropertiesGenerator()
         else if (subcommand.toLocaleLowerCase() === 'okit-terraform-js') generator = new OkitTerraformGenerator()
-        Object.entries(schema.provider_schemas["registry.terraform.io/hashicorp/oci"].resource_schemas).forEach(([key,value]) => {
-            if (generator.resource_map.hasOwnProperty(key)) {
-                generator.generate(key, value)
-                const file_dir = path.join(output_dir, generator.resource_map[key])
-                const file_name = path.join(file_dir, `${generator.resource_map[key]}.js`)
-                const super_file_name = path.join(file_dir, generator.generateSuperClassFilename(key))
-                if (!fs.existsSync(file_dir)) fs.mkdirSync(file_dir, {recursive: true})
-                fs.writeFileSync(super_file_name, generator.resource_class_file)
-                if (!fs.existsSync(file_name)) fs.writeFileSync(file_name, generator.resource_custom_class_file)
-            }
+        Object.entries(schema).forEach(([key, value]) => {
+            generator.generate(key, value)
+            const file_dir = path.join(output_dir, key)
+            const file_name = path.join(file_dir, `${key}.js`)
+            const super_file_name = path.join(file_dir, generator.generateSuperClassFilename(key))
+            if (!fs.existsSync(file_dir)) fs.mkdirSync(file_dir, {recursive: true})
+            fs.writeFileSync(super_file_name, generator.resource_class_file)
+            if (!fs.existsSync(file_name)) fs.writeFileSync(file_name, generator.resource_custom_class_file)
         })
         if (generator.resources.length > 0) {
             const resource_file_name = path.join(output_dir, 'resources.js')
             fs.writeFileSync(resource_file_name, generator.resource_file)
         }
     } 
-} else if (command.toLocaleLowerCase() === 'import') {}
+} else if (command.toLocaleLowerCase() === 'import') {
+        // Source Schema file will be first in the list after command
+        const input_filename = args[2]
+        const input_data = fs.readFileSync(input_filename, 'utf-8')
+        // Generated root directory will be second in the list after command
+        const output_filename = args[3]
+        const source_schema = JSON.parse(input_data)
+        let importer = undefined
+        if (subcommand.toLocaleLowerCase() === 'terraform-schema') importer = new OkitTerraformSchemaImporter()
+        importer.convert(source_schema)
+        fs.writeFileSync(output_filename, JSON.stringify(importer.okit_schema, null, 2))
+}

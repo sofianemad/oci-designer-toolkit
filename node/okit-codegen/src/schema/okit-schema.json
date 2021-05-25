@@ -1,0 +1,478 @@
+{
+  "security_list": {
+    "type": "object",
+    "subtype": "",
+    "attributes": {
+      "compartment_id": {
+        "type": "string",
+        "subtype": "",
+        "required": true,
+        "label": "Compartment",
+        "id": "compartment_id"
+      },
+      "defined_tags": {
+        "type": "map",
+        "subtype": "",
+        "required": false,
+        "label": "Defined Tags",
+        "id": "defined_tags"
+      },
+      "display_name": {
+        "type": "string",
+        "subtype": "",
+        "required": false,
+        "label": "Display Name",
+        "id": "display_name"
+      },
+      "freeform_tags": {
+        "type": "map",
+        "subtype": "",
+        "required": false,
+        "label": "Freeform Tags",
+        "id": "freeform_tags"
+      },
+      "vcn_id": {
+        "type": "string",
+        "subtype": "",
+        "required": true,
+        "label": "Vcn",
+        "id": "vcn_id"
+      },
+      "egress_security_rules": {
+        "type": "list",
+        "subtype": "object",
+        "required": false,
+        "label": "Egress Security Rules",
+        "id": "egress_security_rules",
+        "attributes": {
+          "description": {
+            "type": "string",
+            "subtype": "",
+            "required": false,
+            "label": "Description",
+            "id": "egress_security_rules.description"
+          },
+          "destination": {
+            "type": "string",
+            "subtype": "",
+            "required": true,
+            "label": "Destination",
+            "id": "egress_security_rules.destination"
+          },
+          "destination_type": {
+            "type": "string",
+            "subtype": "",
+            "required": false,
+            "label": "Destination Type",
+            "id": "egress_security_rules.destination_type"
+          },
+          "protocol": {
+            "type": "string",
+            "subtype": "",
+            "required": true,
+            "label": "Protocol",
+            "id": "egress_security_rules.protocol"
+          },
+          "stateless": {
+            "type": "bool",
+            "subtype": "",
+            "required": false,
+            "label": "Stateless",
+            "id": "egress_security_rules.stateless"
+          },
+          "icmp_options": {
+            "type": "object",
+            "subtype": "",
+            "required": false,
+            "label": "Icmp Options",
+            "id": "egress_security_rules.icmp_options",
+            "attributes": {
+              "code": {
+                "type": "number",
+                "subtype": "",
+                "required": false,
+                "label": "Code",
+                "id": "egress_security_rules.icmp_options.code"
+              },
+              "type": {
+                "type": "number",
+                "subtype": "",
+                "required": true,
+                "label": "Type",
+                "id": "egress_security_rules.icmp_options.type"
+              }
+            }
+          },
+          "tcp_options": {
+            "type": "object",
+            "subtype": "",
+            "required": false,
+            "label": "Tcp Options",
+            "id": "egress_security_rules.tcp_options",
+            "attributes": {
+              "max": {
+                "type": "number",
+                "subtype": "",
+                "required": false,
+                "label": "Max",
+                "id": "egress_security_rules.tcp_options.max"
+              },
+              "min": {
+                "type": "number",
+                "subtype": "",
+                "required": false,
+                "label": "Min",
+                "id": "egress_security_rules.tcp_options.min"
+              },
+              "source_port_range": {
+                "type": "object",
+                "subtype": "",
+                "required": false,
+                "label": "Source Port Range",
+                "id": "egress_security_rules.tcp_options.source_port_range",
+                "attributes": {
+                  "max": {
+                    "type": "number",
+                    "subtype": "",
+                    "required": true,
+                    "label": "Max",
+                    "id": "egress_security_rules.tcp_options.source_port_range.max"
+                  },
+                  "min": {
+                    "type": "number",
+                    "subtype": "",
+                    "required": true,
+                    "label": "Min",
+                    "id": "egress_security_rules.tcp_options.source_port_range.min"
+                  }
+                }
+              }
+            }
+          },
+          "udp_options": {
+            "type": "object",
+            "subtype": "",
+            "required": false,
+            "label": "Udp Options",
+            "id": "egress_security_rules.udp_options",
+            "attributes": {
+              "max": {
+                "type": "number",
+                "subtype": "",
+                "required": false,
+                "label": "Max",
+                "id": "egress_security_rules.udp_options.max"
+              },
+              "min": {
+                "type": "number",
+                "subtype": "",
+                "required": false,
+                "label": "Min",
+                "id": "egress_security_rules.udp_options.min"
+              },
+              "source_port_range": {
+                "type": "object",
+                "subtype": "",
+                "required": false,
+                "label": "Source Port Range",
+                "id": "egress_security_rules.udp_options.source_port_range",
+                "attributes": {
+                  "max": {
+                    "type": "number",
+                    "subtype": "",
+                    "required": true,
+                    "label": "Max",
+                    "id": "egress_security_rules.udp_options.source_port_range.max"
+                  },
+                  "min": {
+                    "type": "number",
+                    "subtype": "",
+                    "required": true,
+                    "label": "Min",
+                    "id": "egress_security_rules.udp_options.source_port_range.min"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "ingress_security_rules": {
+        "type": "list",
+        "subtype": "object",
+        "required": false,
+        "label": "Ingress Security Rules",
+        "id": "ingress_security_rules",
+        "attributes": {
+          "description": {
+            "type": "string",
+            "subtype": "",
+            "required": false,
+            "label": "Description",
+            "id": "ingress_security_rules.description"
+          },
+          "protocol": {
+            "type": "string",
+            "subtype": "",
+            "required": true,
+            "label": "Protocol",
+            "id": "ingress_security_rules.protocol"
+          },
+          "source": {
+            "type": "string",
+            "subtype": "",
+            "required": true,
+            "label": "Source",
+            "id": "ingress_security_rules.source"
+          },
+          "source_type": {
+            "type": "string",
+            "subtype": "",
+            "required": false,
+            "label": "Source Type",
+            "id": "ingress_security_rules.source_type"
+          },
+          "stateless": {
+            "type": "bool",
+            "subtype": "",
+            "required": false,
+            "label": "Stateless",
+            "id": "ingress_security_rules.stateless"
+          },
+          "icmp_options": {
+            "type": "object",
+            "subtype": "",
+            "required": false,
+            "label": "Icmp Options",
+            "id": "ingress_security_rules.icmp_options",
+            "attributes": {
+              "code": {
+                "type": "number",
+                "subtype": "",
+                "required": false,
+                "label": "Code",
+                "id": "ingress_security_rules.icmp_options.code"
+              },
+              "type": {
+                "type": "number",
+                "subtype": "",
+                "required": true,
+                "label": "Type",
+                "id": "ingress_security_rules.icmp_options.type"
+              }
+            }
+          },
+          "tcp_options": {
+            "type": "object",
+            "subtype": "",
+            "required": false,
+            "label": "Tcp Options",
+            "id": "ingress_security_rules.tcp_options",
+            "attributes": {
+              "max": {
+                "type": "number",
+                "subtype": "",
+                "required": false,
+                "label": "Max",
+                "id": "ingress_security_rules.tcp_options.max"
+              },
+              "min": {
+                "type": "number",
+                "subtype": "",
+                "required": false,
+                "label": "Min",
+                "id": "ingress_security_rules.tcp_options.min"
+              },
+              "source_port_range": {
+                "type": "object",
+                "subtype": "",
+                "required": false,
+                "label": "Source Port Range",
+                "id": "ingress_security_rules.tcp_options.source_port_range",
+                "attributes": {
+                  "max": {
+                    "type": "number",
+                    "subtype": "",
+                    "required": true,
+                    "label": "Max",
+                    "id": "ingress_security_rules.tcp_options.source_port_range.max"
+                  },
+                  "min": {
+                    "type": "number",
+                    "subtype": "",
+                    "required": true,
+                    "label": "Min",
+                    "id": "ingress_security_rules.tcp_options.source_port_range.min"
+                  }
+                }
+              }
+            }
+          },
+          "udp_options": {
+            "type": "object",
+            "subtype": "",
+            "required": false,
+            "label": "Udp Options",
+            "id": "ingress_security_rules.udp_options",
+            "attributes": {
+              "max": {
+                "type": "number",
+                "subtype": "",
+                "required": false,
+                "label": "Max",
+                "id": "ingress_security_rules.udp_options.max"
+              },
+              "min": {
+                "type": "number",
+                "subtype": "",
+                "required": false,
+                "label": "Min",
+                "id": "ingress_security_rules.udp_options.min"
+              },
+              "source_port_range": {
+                "type": "object",
+                "subtype": "",
+                "required": false,
+                "label": "Source Port Range",
+                "id": "ingress_security_rules.udp_options.source_port_range",
+                "attributes": {
+                  "max": {
+                    "type": "number",
+                    "subtype": "",
+                    "required": true,
+                    "label": "Max",
+                    "id": "ingress_security_rules.udp_options.source_port_range.max"
+                  },
+                  "min": {
+                    "type": "number",
+                    "subtype": "",
+                    "required": true,
+                    "label": "Min",
+                    "id": "ingress_security_rules.udp_options.source_port_range.min"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "vcn": {
+    "type": "object",
+    "subtype": "",
+    "attributes": {
+      "cidr_block": {
+        "type": "string",
+        "subtype": "",
+        "required": false,
+        "label": "Cidr Block",
+        "id": "cidr_block"
+      },
+      "cidr_blocks": {
+        "type": "list",
+        "subtype": "",
+        "required": false,
+        "label": "Cidr Blocks",
+        "id": "cidr_blocks"
+      },
+      "compartment_id": {
+        "type": "string",
+        "subtype": "",
+        "required": true,
+        "label": "Compartment",
+        "id": "compartment_id"
+      },
+      "defined_tags": {
+        "type": "map",
+        "subtype": "",
+        "required": false,
+        "label": "Defined Tags",
+        "id": "defined_tags"
+      },
+      "display_name": {
+        "type": "string",
+        "subtype": "",
+        "required": false,
+        "label": "Display Name",
+        "id": "display_name"
+      },
+      "dns_label": {
+        "type": "string",
+        "subtype": "",
+        "required": false,
+        "label": "Dns Label",
+        "id": "dns_label"
+      },
+      "freeform_tags": {
+        "type": "map",
+        "subtype": "",
+        "required": false,
+        "label": "Freeform Tags",
+        "id": "freeform_tags"
+      },
+      "ipv6cidr_block": {
+        "type": "string",
+        "subtype": "",
+        "required": false,
+        "label": "Ipv6cidr Block",
+        "id": "ipv6cidr_block"
+      },
+      "is_ipv6enabled": {
+        "type": "bool",
+        "subtype": "",
+        "required": false,
+        "label": "Is Ipv6enabled",
+        "id": "is_ipv6enabled"
+      }
+    }
+  },
+  "compartment": {
+    "type": "object",
+    "subtype": "",
+    "attributes": {
+      "compartment_id": {
+        "type": "string",
+        "subtype": "",
+        "required": false,
+        "label": "Compartment",
+        "id": "compartment_id"
+      },
+      "defined_tags": {
+        "type": "map",
+        "subtype": "",
+        "required": false,
+        "label": "Defined Tags",
+        "id": "defined_tags"
+      },
+      "description": {
+        "type": "string",
+        "subtype": "",
+        "required": true,
+        "label": "Description",
+        "id": "description"
+      },
+      "enable_delete": {
+        "type": "bool",
+        "subtype": "",
+        "required": false,
+        "label": "Enable Delete",
+        "id": "enable_delete"
+      },
+      "freeform_tags": {
+        "type": "map",
+        "subtype": "",
+        "required": false,
+        "label": "Freeform Tags",
+        "id": "freeform_tags"
+      },
+      "name": {
+        "type": "string",
+        "subtype": "",
+        "required": true,
+        "label": "Name",
+        "id": "name"
+      }
+    }
+  }
+}

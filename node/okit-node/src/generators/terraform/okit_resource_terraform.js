@@ -44,6 +44,7 @@ class OkitResourceTerraform {
         return r
     }, {})}
     get resource_name() {return this.generateResourceName(this.resource.resource_name)}
+    get resource_id() {return this.resource.id}
 
     generateResourceName(str) {
         return str.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase()}).split(' ').join('')
@@ -78,7 +79,14 @@ resource "${this.tf_resource_name}" "${this.resource_name}" {
         `
     }
 
-    toData() {return ''}
+    toData() {
+        return `
+data "${this.tf_resource_name}" "${this.resource_name}" {
+    # Required
+    ${this.buildRequired()}
+}
+        `
+    }
 
     toLocalVariables() {return ''}
 
