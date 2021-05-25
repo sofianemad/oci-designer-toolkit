@@ -12,7 +12,7 @@
 ** === Auto Generated Code All Edits Will Be Lost During Regeneration ===
 ** ======================================================================
 **
-** Generated : 25/05/2021 10:59:32
+** Generated : 25/05/2021 12:29:46
 **
 */
 
@@ -53,10 +53,10 @@ class CompartmentResource extends OkitResourceTerraform {
         cmd.push(`    description = ${this.varValOrRef('description', this.resource.description)}`)
         cmd.push(`    name = ${this.varValOrRef('name', this.resource.name)}`)
         cmd.push('    #Optional')
-        cmd.push(`    compartment_id = ${this.varValOrRef('compartment_id', this.resource.compartment_id)}`)
-        cmd.push(`    defined_tags = ${this.varValOrRef('defined_tags', this.resource.defined_tags)}`)
-        cmd.push(`    enable_delete = ${this.varValOrRef('enable_delete', this.resource.enable_delete)}`)
-        cmd.push(`    freeform_tags = ${this.varValOrRef('freeform_tags', this.resource.freeform_tags)}`)
+        if (this.resource.compartment_id && this.resource.compartment_id !== '') cmd.push(`    compartment_id = ${this.varValOrRef('compartment_id', this.resource.compartment_id)}`)
+        if (this.resource.defined_tags && this.resource.defined_tags !== '') cmd.push(`    defined_tags = ${this.varValOrRef('defined_tags', this.resource.defined_tags)}`)
+        if (this.resource.enable_delete && this.resource.enable_delete !== '') cmd.push(`    enable_delete = ${this.varValOrRef('enable_delete', this.resource.enable_delete)}`)
+        if (this.resource.freeform_tags && this.resource.freeform_tags !== '') cmd.push(`    freeform_tags = ${this.varValOrRef('freeform_tags', this.resource.freeform_tags)}`)
         cmd.push('    #Tags')
         cmd.push('}')
         return cmd.join('\n')

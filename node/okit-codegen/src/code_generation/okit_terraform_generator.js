@@ -99,7 +99,7 @@ export { ${class_name} }
             } else if (val.type === 'object') {
 
             } else {
-                return this.generateAttrAssignment(key, val, depth) 
+                return this.generateSimpleAssignment(key, val, depth) 
             }
         })
         return cmd.join('\n')
@@ -107,20 +107,29 @@ export { ${class_name} }
 
     generateOptional(attributes, depth=1) {
         let cmd = Object.entries(this.getOptionalAttributes(attributes)).map(([key, val]) => {
-            if (val.type === 'list') {
-
+            if (val.type === 'list' && (val.subtype === 'string' || val.subtype === '')) {
+                return this.generateListAssignment(key, val, depth) 
             } else if (val.type === 'object') {
 
             } else {
-                return this.generateAttrAssignment(key, val, depth) 
+                return this.generateSimpleAssignment(key, val, depth) 
             }
         })
         return cmd.join('\n')
     }
 
-    generateAttrAssignment(key, val, depth) {
+    generateSimpleAssignment(key, val, depth) {
         console.info('Assignment:', key, '=', val.id)
-        return `        cmd.push(\`${this.indent(depth)}${key} = \${this.varValOrRef('${key}', this.resource.${val.id})}\`)`
+        let optional = ''
+        if (!val.required) optional = `if (this.resource.${val.id} && this.resource.${val.id} !== '') `
+        return `        ${optional}cmd.push(\`${this.indent(depth)}${key} = \${this.varValOrRef('${key}', this.resource.${val.id})}\`)`
+    }
+
+    generateListAssignment(key, val, depth) {
+        console.info('Assignment:', key, '=', val.id)
+        let optional = ''
+        if (!val.required) optional = `if (this.resource.${val.id} && this.resource.${val.id}.length > 0) `
+        return `        ${optional}cmd.push(\`${this.indent(depth)}${key} = [\${this.varValOrRef('${key}', this.resource.${val.id})}]\`)`
     }
 
     indent(depth) {

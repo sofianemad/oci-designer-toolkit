@@ -12,7 +12,7 @@
 ** === Auto Generated Code All Edits Will Be Lost During Regeneration ===
 ** ======================================================================
 **
-** Generated : 25/05/2021 10:59:32
+** Generated : 25/05/2021 12:29:46
 **
 */
 
@@ -53,11 +53,11 @@ class SecurityListResource extends OkitResourceTerraform {
         cmd.push(`    compartment_id = ${this.varValOrRef('compartment_id', this.resource.compartment_id)}`)
         cmd.push(`    vcn_id = ${this.varValOrRef('vcn_id', this.resource.vcn_id)}`)
         cmd.push('    #Optional')
-        cmd.push(`    defined_tags = ${this.varValOrRef('defined_tags', this.resource.defined_tags)}`)
-        cmd.push(`    display_name = ${this.varValOrRef('display_name', this.resource.display_name)}`)
-        cmd.push(`    freeform_tags = ${this.varValOrRef('freeform_tags', this.resource.freeform_tags)}`)
-
-
+        if (this.resource.defined_tags && this.resource.defined_tags !== '') cmd.push(`    defined_tags = ${this.varValOrRef('defined_tags', this.resource.defined_tags)}`)
+        if (this.resource.display_name && this.resource.display_name !== '') cmd.push(`    display_name = ${this.varValOrRef('display_name', this.resource.display_name)}`)
+        if (this.resource.freeform_tags && this.resource.freeform_tags !== '') cmd.push(`    freeform_tags = ${this.varValOrRef('freeform_tags', this.resource.freeform_tags)}`)
+        if (this.resource.egress_security_rules && this.resource.egress_security_rules !== '') cmd.push(`    egress_security_rules = ${this.varValOrRef('egress_security_rules', this.resource.egress_security_rules)}`)
+        if (this.resource.ingress_security_rules && this.resource.ingress_security_rules !== '') cmd.push(`    ingress_security_rules = ${this.varValOrRef('ingress_security_rules', this.resource.ingress_security_rules)}`)
         cmd.push('    #Tags')
         cmd.push('}')
         return cmd.join('\n')

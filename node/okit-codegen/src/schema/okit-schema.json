@@ -411,12 +411,12 @@
         "label": "Freeform Tags",
         "id": "freeform_tags"
       },
-      "ipv6cidr_block": {
-        "type": "string",
+      "ipv6cidr_blocks": {
+        "type": "list",
         "subtype": "",
         "required": false,
-        "label": "Ipv6cidr Block",
-        "id": "ipv6cidr_block"
+        "label": "Ipv6cidr Blocks",
+        "id": "ipv6cidr_blocks"
       },
       "is_ipv6enabled": {
         "type": "bool",

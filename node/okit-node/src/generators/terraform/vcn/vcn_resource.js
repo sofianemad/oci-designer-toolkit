@@ -12,7 +12,7 @@
 ** === Auto Generated Code All Edits Will Be Lost During Regeneration ===
 ** ======================================================================
 **
-** Generated : 25/05/2021 10:59:32
+** Generated : 25/05/2021 12:29:46
 **
 */
 
@@ -52,14 +52,14 @@ class VcnResource extends OkitResourceTerraform {
         cmd.push('    #Required')
         cmd.push(`    compartment_id = ${this.varValOrRef('compartment_id', this.resource.compartment_id)}`)
         cmd.push('    #Optional')
-        cmd.push(`    cidr_block = ${this.varValOrRef('cidr_block', this.resource.cidr_block)}`)
-
-        cmd.push(`    defined_tags = ${this.varValOrRef('defined_tags', this.resource.defined_tags)}`)
-        cmd.push(`    display_name = ${this.varValOrRef('display_name', this.resource.display_name)}`)
-        cmd.push(`    dns_label = ${this.varValOrRef('dns_label', this.resource.dns_label)}`)
-        cmd.push(`    freeform_tags = ${this.varValOrRef('freeform_tags', this.resource.freeform_tags)}`)
-        cmd.push(`    ipv6cidr_block = ${this.varValOrRef('ipv6cidr_block', this.resource.ipv6cidr_block)}`)
-        cmd.push(`    is_ipv6enabled = ${this.varValOrRef('is_ipv6enabled', this.resource.is_ipv6enabled)}`)
+        if (this.resource.cidr_block && this.resource.cidr_block !== '') cmd.push(`    cidr_block = ${this.varValOrRef('cidr_block', this.resource.cidr_block)}`)
+        if (this.resource.cidr_blocks && this.resource.cidr_blocks.length > 0) cmd.push(`    cidr_blocks = [${this.varValOrRef('cidr_blocks', this.resource.cidr_blocks)}]`)
+        if (this.resource.defined_tags && this.resource.defined_tags !== '') cmd.push(`    defined_tags = ${this.varValOrRef('defined_tags', this.resource.defined_tags)}`)
+        if (this.resource.display_name && this.resource.display_name !== '') cmd.push(`    display_name = ${this.varValOrRef('display_name', this.resource.display_name)}`)
+        if (this.resource.dns_label && this.resource.dns_label !== '') cmd.push(`    dns_label = ${this.varValOrRef('dns_label', this.resource.dns_label)}`)
+        if (this.resource.freeform_tags && this.resource.freeform_tags !== '') cmd.push(`    freeform_tags = ${this.varValOrRef('freeform_tags', this.resource.freeform_tags)}`)
+        if (this.resource.ipv6cidr_blocks && this.resource.ipv6cidr_blocks.length > 0) cmd.push(`    ipv6cidr_blocks = [${this.varValOrRef('ipv6cidr_blocks', this.resource.ipv6cidr_blocks)}]`)
+        if (this.resource.is_ipv6enabled && this.resource.is_ipv6enabled !== '') cmd.push(`    is_ipv6enabled = ${this.varValOrRef('is_ipv6enabled', this.resource.is_ipv6enabled)}`)
         cmd.push('    #Tags')
         cmd.push('}')
         return cmd.join('\n')
