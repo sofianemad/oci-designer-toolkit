@@ -12,7 +12,7 @@
 ** === Auto Generated Code All Edits Will Be Lost During Regeneration ===
 ** ======================================================================
 **
-** Generated : 25/05/2021 12:29:46
+** Generated : 25/05/2021 16:44:54
 **
 */
 
@@ -54,10 +54,10 @@ class VcnResource extends OkitResourceTerraform {
         cmd.push('    #Optional')
         if (this.resource.cidr_block && this.resource.cidr_block !== '') cmd.push(`    cidr_block = ${this.varValOrRef('cidr_block', this.resource.cidr_block)}`)
         if (this.resource.cidr_blocks && this.resource.cidr_blocks.length > 0) cmd.push(`    cidr_blocks = [${this.varValOrRef('cidr_blocks', this.resource.cidr_blocks)}]`)
-        if (this.resource.defined_tags && this.resource.defined_tags !== '') cmd.push(`    defined_tags = ${this.varValOrRef('defined_tags', this.resource.defined_tags)}`)
+
         if (this.resource.display_name && this.resource.display_name !== '') cmd.push(`    display_name = ${this.varValOrRef('display_name', this.resource.display_name)}`)
         if (this.resource.dns_label && this.resource.dns_label !== '') cmd.push(`    dns_label = ${this.varValOrRef('dns_label', this.resource.dns_label)}`)
-        if (this.resource.freeform_tags && this.resource.freeform_tags !== '') cmd.push(`    freeform_tags = ${this.varValOrRef('freeform_tags', this.resource.freeform_tags)}`)
+
         if (this.resource.ipv6cidr_blocks && this.resource.ipv6cidr_blocks.length > 0) cmd.push(`    ipv6cidr_blocks = [${this.varValOrRef('ipv6cidr_blocks', this.resource.ipv6cidr_blocks)}]`)
         if (this.resource.is_ipv6enabled && this.resource.is_ipv6enabled !== '') cmd.push(`    is_ipv6enabled = ${this.varValOrRef('is_ipv6enabled', this.resource.is_ipv6enabled)}`)
         cmd.push('    #Tags')

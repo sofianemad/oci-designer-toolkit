@@ -94,8 +94,8 @@ export { ${class_name} }
 
     generateRequired(attributes, depth=1) {
         let cmd = Object.entries(this.getRequiredAttributes(attributes)).map(([key, val]) => {
-            if (val.type === 'list') {
-
+            if (val.type === 'list' && (val.subtype === 'string' || val.subtype === '')) {
+                return this.generateListAssignment(key, val, depth) 
             } else if (val.type === 'object') {
 
             } else {
@@ -110,6 +110,8 @@ export { ${class_name} }
             if (val.type === 'list' && (val.subtype === 'string' || val.subtype === '')) {
                 return this.generateListAssignment(key, val, depth) 
             } else if (val.type === 'object') {
+
+            } else if (val.type === 'map') {
 
             } else {
                 return this.generateSimpleAssignment(key, val, depth) 
