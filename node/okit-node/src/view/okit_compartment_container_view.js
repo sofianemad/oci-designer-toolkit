@@ -9,7 +9,7 @@
 */
 
 import * as okit_resources from '../resources/resources.js'
-import { OkitView } from './okit_view.js'
+import OkitView from './okit_view.js'
 
 class OkitCompartmentContainerView extends OkitView {
 
@@ -25,4 +25,4 @@ class OkitCompartmentContainerView extends OkitView {
 }
 
 export default OkitCompartmentContainerView
-export { OkitCompartmentContainerView }
+// export { OkitCompartmentContainerView }

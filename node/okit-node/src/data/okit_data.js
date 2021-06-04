@@ -57,4 +57,5 @@ class OkitData {
     }
 }
 
-export { OkitData }
+export default OkitData
+// export { OkitData }

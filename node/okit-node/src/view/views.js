@@ -7,5 +7,7 @@
 ** Author: Andrew Hopkinson
 */
 
-export { OkitView } from './okit_view.js'
-export { OkitCompartmentContainerView } from './okit_compartment_container_view.js'
+import OkitView from './okit_view.js'
+import OkitCompartmentContainerView from './okit_compartment_container_view.js'
+export { OkitView }
+export { OkitCompartmentContainerView }

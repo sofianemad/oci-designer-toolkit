@@ -7,7 +7,7 @@
 ** Author: Andrew Hopkinson
 */
 
-import { OkitData } from '../data/okit.js'
+import OkitData from '../data/okit_data.js'
 
 class OkitJsonImporter {
     constructor(data) {

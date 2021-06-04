@@ -10,7 +10,7 @@
 import fs from 'fs'
 import path from 'path'
 import { JSDOM } from 'jsdom'
-import { OkitData } from 'okit-node/src/data/okit.js'
+import OkitData from 'okit-node/src/data/okit_data.js'
 import { OkitCompartmentContainerView } from 'okit-node/src/view/views.js'
 import { OkitJsonImporter } from 'okit-node/src/importer/okit_json_importer.js'
 // Create Simple HTML Page with OKIT Canvas div
