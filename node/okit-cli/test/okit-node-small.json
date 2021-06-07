@@ -1,0 +1,269 @@
+{
+  "title": "OKIT OCI Visualiser Json",
+  "description": "# Description\n__Created 2021-6-4 12:30:10__\n\n--------------------------------------\n\n",
+  "created": "2021-6-4 12:30:10",
+  "updated": "2021-6-4 12:31:16",
+  "okit_version": "0.21.0",
+  "autonomous_databases": [],
+  "block_storage_volumes": [],
+  "compartments": [
+    {
+      "id": "okit.compartment.8dca67e8-7852-4655-a7ad-a961917c646b",
+      "compartment_id": null,
+      "display_name": "okit-comp001",
+      "definition": "",
+      "freeform_tags": {},
+      "defined_tags": {},
+      "description": "okit-comp001"
+    }
+  ],
+  "customer_premise_equipments": [],
+  "database_systems": [],
+  "dynamic_routing_gateways": [],
+  "fast_connects": [],
+  "file_storage_systems": [],
+  "instances": [
+    {
+      "id": "okit.instance.a525d837-9326-4561-8b93-8dca4cefb1bc",
+      "compartment_id": "okit.compartment.8dca67e8-7852-4655-a7ad-a961917c646b",
+      "display_name": "okit-in001",
+      "definition": "",
+      "freeform_tags": {},
+      "defined_tags": {},
+      "availability_domain": "1",
+      "shape": "VM.Standard.E3.Flex",
+      "count": 1,
+      "fault_domain": "",
+      "agent_config": {
+        "is_monitoring_disabled": false,
+        "is_management_disabled": false
+      },
+      "vnics": [
+        {
+          "subnet_id": "okit.subnet.78468383-426e-45dd-a355-648e7d975425",
+          "assign_public_ip": true,
+          "nsg_ids": [],
+          "skip_source_dest_check": false,
+          "hostname_label": "okit-in0010"
+        }
+      ],
+      "source_details": {
+        "os": "Oracle Linux",
+        "version": "7.8",
+        "boot_volume_size_in_gbs": "50",
+        "source_type": "image"
+      },
+      "metadata": {
+        "ssh_authorized_keys": "",
+        "user_data": ""
+      },
+      "shape_config": {
+        "memory_in_gbs": 16,
+        "ocpus": 1
+      },
+      "block_storage_volume_ids": [],
+      "object_storage_bucket_ids": [],
+      "autonomous_database_ids": [],
+      "preserve_boot_volume": false,
+      "is_pv_encryption_in_transit_enabled": false,
+      "primary_vnic": {
+        "subnet_id": "okit.subnet.78468383-426e-45dd-a355-648e7d975425",
+        "assign_public_ip": true,
+        "nsg_ids": [],
+        "skip_source_dest_check": false,
+        "hostname_label": "okit-in0010"
+      }
+    },
+    {
+      "id": "okit.instance.6396e944-2ad6-40d1-b07b-9d56f1d368c7",
+      "compartment_id": "okit.compartment.8dca67e8-7852-4655-a7ad-a961917c646b",
+      "display_name": "okit-in002",
+      "definition": "",
+      "freeform_tags": {},
+      "defined_tags": {},
+      "availability_domain": "1",
+      "shape": "VM.Standard.E3.Flex",
+      "count": 1,
+      "fault_domain": "",
+      "agent_config": {
+        "is_monitoring_disabled": false,
+        "is_management_disabled": false
+      },
+      "vnics": [
+        {
+          "subnet_id": "okit.subnet.78468383-426e-45dd-a355-648e7d975425",
+          "assign_public_ip": true,
+          "nsg_ids": [],
+          "skip_source_dest_check": false,
+          "hostname_label": "okit-in0020"
+        }
+      ],
+      "source_details": {
+        "os": "Oracle Linux",
+        "version": "7.8",
+        "boot_volume_size_in_gbs": "50",
+        "source_type": "image"
+      },
+      "metadata": {
+        "ssh_authorized_keys": "",
+        "user_data": ""
+      },
+      "shape_config": {
+        "memory_in_gbs": 16,
+        "ocpus": 1
+      },
+      "block_storage_volume_ids": [],
+      "object_storage_bucket_ids": [],
+      "autonomous_database_ids": [],
+      "preserve_boot_volume": false,
+      "is_pv_encryption_in_transit_enabled": false,
+      "primary_vnic": {
+        "subnet_id": "okit.subnet.78468383-426e-45dd-a355-648e7d975425",
+        "assign_public_ip": true,
+        "nsg_ids": [],
+        "skip_source_dest_check": false,
+        "hostname_label": "okit-in0020"
+      }
+    }
+  ],
+  "instance_pools": [],
+  "internet_gateways": [
+    {
+      "id": "okit.internetgateway.2f544252-ee9a-4652-9492-53b243fd430f",
+      "compartment_id": "okit.compartment.8dca67e8-7852-4655-a7ad-a961917c646b",
+      "display_name": "okit-ig001",
+      "definition": "",
+      "freeform_tags": {},
+      "defined_tags": {},
+      "vcn_id": "okit.virtualcloudnetwork.27cf5c39-1d34-48fc-97db-16716c2b9a53",
+      "enabled": true
+    }
+  ],
+  "ipsec_connections": [],
+  "load_balancers": [
+    {
+      "id": "okit.loadbalancer.a67f339e-cce6-4300-a53f-69af83be9334",
+      "compartment_id": "okit.compartment.8dca67e8-7852-4655-a7ad-a961917c646b",
+      "display_name": "okit-lb001",
+      "definition": "",
+      "freeform_tags": {},
+      "defined_tags": {},
+      "subnet_ids": [
+        "okit.subnet.b504a7ca-c0bf-46c7-b83a-2d5b79d9b762"
+      ],
+      "is_private": false,
+      "shape": "flexible",
+      "protocol": "HTTP",
+      "port": "80",
+      "instance_ids": [
+        "okit.instance.a525d837-9326-4561-8b93-8dca4cefb1bc",
+        "okit.instance.6396e944-2ad6-40d1-b07b-9d56f1d368c7"
+      ],
+      "ip_mode": "",
+      "network_security_group_ids": [],
+      "backend_policy": "ROUND_ROBIN",
+      "health_checker": {
+        "url_path": "/"
+      },
+      "shape_details": {
+        "minimum_bandwidth_in_mbps": 10,
+        "maximum_bandwidth_in_mbps": 10
+      }
+    }
+  ],
+  "local_peering_gateways": [],
+  "mysql_database_systems": [],
+  "nat_gateways": [],
+  "network_security_groups": [],
+  "object_storage_buckets": [],
+  "oke_clusters": [],
+  "remote_peering_connections": [],
+  "route_tables": [
+    {
+      "id": "okit.routetable.bed22c58-327c-43aa-9e88-0f00b94dd9ac",
+      "compartment_id": "okit.compartment.8dca67e8-7852-4655-a7ad-a961917c646b",
+      "display_name": "okit-rt001",
+      "definition": "",
+      "freeform_tags": {},
+      "defined_tags": {},
+      "vcn_id": "okit.virtualcloudnetwork.27cf5c39-1d34-48fc-97db-16716c2b9a53",
+      "route_rules": [
+        {
+          "target_type": "internet_gateways",
+          "destination_type": "CIDR_BLOCK",
+          "destination": "0.0.0.0/0",
+          "network_entity_id": "okit.internetgateway.2f544252-ee9a-4652-9492-53b243fd430f",
+          "description": ""
+        }
+      ]
+    }
+  ],
+  "security_lists": [
+    {
+      "id": "okit.securitylist.4b230827-b537-435e-bc1b-41f754c9f228",
+      "compartment_id": "okit.compartment.8dca67e8-7852-4655-a7ad-a961917c646b",
+      "display_name": "okit-sl001",
+      "definition": "",
+      "freeform_tags": {},
+      "defined_tags": {},
+      "vcn_id": "okit.virtualcloudnetwork.27cf5c39-1d34-48fc-97db-16716c2b9a53",
+      "egress_security_rules": [],
+      "ingress_security_rules": []
+    }
+  ],
+  "service_gateways": [],
+  "subnets": [
+    {
+      "id": "okit.subnet.b504a7ca-c0bf-46c7-b83a-2d5b79d9b762",
+      "compartment_id": "okit.compartment.8dca67e8-7852-4655-a7ad-a961917c646b",
+      "display_name": "okit-sn001",
+      "definition": "",
+      "freeform_tags": {},
+      "defined_tags": {},
+      "vcn_id": "okit.virtualcloudnetwork.27cf5c39-1d34-48fc-97db-16716c2b9a53",
+      "cidr_block": "10.0.0.0/24",
+      "dns_label": "sn001",
+      "prohibit_public_ip_on_vnic": false,
+      "route_table_id": "okit.routetable.bed22c58-327c-43aa-9e88-0f00b94dd9ac",
+      "security_list_ids": [
+        "okit.securitylist.4b230827-b537-435e-bc1b-41f754c9f228"
+      ],
+      "availability_domain": "0",
+      "is_ipv6enabled": false,
+      "ipv6cidr_block": ""
+    },
+    {
+      "id": "okit.subnet.78468383-426e-45dd-a355-648e7d975425",
+      "compartment_id": "okit.compartment.8dca67e8-7852-4655-a7ad-a961917c646b",
+      "display_name": "okit-sn002",
+      "definition": "",
+      "freeform_tags": {},
+      "defined_tags": {},
+      "vcn_id": "okit.virtualcloudnetwork.27cf5c39-1d34-48fc-97db-16716c2b9a53",
+      "cidr_block": "10.0.1.0/24",
+      "dns_label": "sn002",
+      "prohibit_public_ip_on_vnic": true,
+      "route_table_id": "okit.routetable.bed22c58-327c-43aa-9e88-0f00b94dd9ac",
+      "security_list_ids": [
+        "okit.securitylist.4b230827-b537-435e-bc1b-41f754c9f228"
+      ],
+      "availability_domain": "0",
+      "is_ipv6enabled": false,
+      "ipv6cidr_block": ""
+    }
+  ],
+  "virtual_cloud_networks": [
+    {
+      "id": "okit.virtualcloudnetwork.27cf5c39-1d34-48fc-97db-16716c2b9a53",
+      "compartment_id": "okit.compartment.8dca67e8-7852-4655-a7ad-a961917c646b",
+      "display_name": "okit-vcn001",
+      "definition": "",
+      "freeform_tags": {},
+      "defined_tags": {},
+      "cidr_block": "10.0.0.0/16",
+      "dns_label": "vcn001",
+      "is_ipv6enabled": false,
+      "ipv6cidr_block": ""
+    }
+  ]
+}

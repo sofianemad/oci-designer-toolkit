@@ -23,8 +23,12 @@
     "main": "src/okit-cli.js",
     "scripts": {
         "start": "node .",
-        "test-import-json": "node src/okit-cli.js import okit-json test/okit-node-test.json test/okit-node-test.okit",
-        "test-generate-svg": "node src/okit-cli.js generate svg test/okit-node-test.okit test/okit-node-test.svg"
+        "test-import-json": "node src/okit-cli.js import okit-json test/okit-node.json test/okit-node.okit",
+        "test-generate-svg": "node src/okit-cli.js generate svg test/okit-node.okit test/okit-node.svg",
+        "test-import-small-json": "node src/okit-cli.js import okit-json test/okit-node-small.json test/okit-node-small.okit",
+        "test-generate-small-svg": "node src/okit-cli.js generate svg test/okit-node-small.okit test/okit-node-small.svg",
+        "test-import-empty-json": "node src/okit-cli.js import okit-json test/okit-node-empty.json test/okit-node-empty.okit",
+        "test-generate-empty-svg": "node src/okit-cli.js generate svg test/okit-node-empty.okit test/okit-node-empty.svg"
     },
     "private": true,
     "type": "module",
