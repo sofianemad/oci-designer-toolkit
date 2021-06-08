@@ -56,14 +56,15 @@ class OkitView {
 
     get class_name() {return this.constructor.name}
     get json () {return this.okit_data.okit} 
-    get coords() {return this.json.region[this.region].views[this.class_name] ? this.json.region[this.region].views[this.class_name].coords : this.newCoords().coords}
+    get coords() {return this.json.views[this.class_name] && this.json.views[this.class_name].region[this.region] ? this.json.views[this.class_name].region[this.region].coords : this.newCoords().coords}
     // get coords() {return this.okit_data.okit.coords}
     get svg() {return this.okit_data.okit.svg}
     get canvas_rect_id() {return `${this.canvas_svg_id}-rect`}
 
     newCoords() {
-        this.json.region[this.region].views[this.class_name] = {coords: {}, connectors: {},svg: {}}
-        return this.json.region[this.region].views[this.class_name]
+        if (this.json.views[this.class_name] === undefined) this.json.views[this.class_name] = {region: {}}
+        this.json.views[this.class_name].region[this.region] = {coords: {}, connectors: {}}
+        return this.json.views[this.class_name].region[this.region]
     }
 
     clear() {
@@ -248,7 +249,7 @@ class OkitView {
     }
 
     // Function Getters
-    get all_data_resources() {return {...this.okit_data.okit.region.cross_region.resources, ...this.okit_data.okit.region[this.region].resources}}
+    get all_data_resources() {return {...this.okit_data.okit.model.region.cross_region.resources, ...this.okit_data.okit.model.region[this.region].resources}}
     get all_resources() {return this.resources ? [].concat(...Object.values(this.resources)) : []}
     get small_grid_size() {return 8;}
     get grid_size() {return this.small_grid_size * 10;}

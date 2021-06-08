@@ -56,22 +56,25 @@
   "views": {
       "OkitCompartmentContainerView": {
         "documentation": "",
-        "coords": {
-          "okit.compartment.61307cb4-dc06-4219-9db3-ccf26eb9809e": {
-            "x": 0,
-            "y": 0,
-            "w": 390,
-            "h": 310
-          },
-          "okit.virtualcloudnetwork.71ef962d-24b4-4296-8682-3825776a7299": {
-            "x": 60,
-            "y": 60,
-            "w": 270,
-            "h": 170
+        "region": {
+          "undefined": {
+            "coords": {
+              "okit.compartment.61307cb4-dc06-4219-9db3-ccf26eb9809e": {
+                "x": 0,
+                "y": 0,
+                "w": 390,
+                "h": 310
+              },
+              "okit.virtualcloudnetwork.71ef962d-24b4-4296-8682-3825776a7299": {
+                "x": 60,
+                "y": 60,
+                "w": 270,
+                "h": 170
+              }
+            },
+            "connectors": {}
           }
-        },
-        "connectors": {},
-        "svg": {}
+        }
       }
   }
 }
