@@ -27,6 +27,7 @@ class OkitJsonImporter {
     }
 
     resource_map = {
+        analytics_instances: 'analytics_instance',
         autonomous_databases: 'autonomous_database',
         block_storage_volumes: 'volume',
         compartments: 'compartment',
@@ -61,13 +62,13 @@ class OkitJsonImporter {
                 if (Array.isArray(value)) {
                     if (value.length > 0) {
                         if (this.cross_region_resources.includes(this.resource_map[key])) {
-                            this.okit_data.okit.region.cross_region.resources[this.resource_map[key]] = value
+                            this.okit_data.okit.model.region.cross_region.resources[this.resource_map[key]] = value
                         } else {
-                            this.okit_data.okit.region[String(region)].resources[this.resource_map[key]] = value
+                            this.okit_data.okit.model.region[String(region)].resources[this.resource_map[key]] = value
                         }
                     }
                 } else {
-                    this.okit_data.okit[key] = value
+                    this.okit_data.okit.metadata[key] = value
                 }
             })
         }

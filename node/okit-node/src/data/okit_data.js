@@ -16,24 +16,30 @@ class OkitData {
         const date = `${today.getFullYear()}-${(today.getMonth() + 1)}-${today.getDate()}`;
         const time = `${today.getHours()}:${today.getMinutes()}:${today.getSeconds()}`;
         this.okit = {
-            okit_version: '0.20.0',
-            okit_schema_version: '0.1.0',
-            title: 'OKIT - The OCI Designer / Visualiser',
-            description: '',
-            created: `${date} ${time}`,
-            updated: '',
-            tags: {},
-            region: {
-                cross_region: {
-                    resources: {},
-                    vars: {}
-                },
-                undefined: {
-                    resources: {},
-                    vars: {},
-                    views: {}
+            metadata: {
+                okit_version: '0.20.0',
+                okit_schema_version: '0.1.0',
+                title: 'OKIT - The OCI Designer / Visualiser',
+                description: '',
+                documentation: '',
+                created: `${date} ${time}`,
+                updated: ''
+            },
+            model: {
+                tags: {},
+                vars: {},
+                region: {
+                    cross_region: {
+                        resources: {},
+                        vars: {}
+                    },
+                    undefined: {
+                        resources: {},
+                        vars: {}
+                    }
                 }
-            }
+            },
+            views: {}
         }  
         if (data && typeof data === 'string') this.loadString(data)
         else if (data && data instanceof Object) this.loadJson(data)
