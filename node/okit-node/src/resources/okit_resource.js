@@ -378,8 +378,8 @@ class OkitResource {
     }
     // --- svg
     get svg_id() {return `${this.json.id}-svg`}
-    get svg_x() {return this.view.coords[this.json.id] ? this.view.coords[this.json.id].x : this.parent ? this.parent.getChildOffest(this).dx : 0}
-    get svg_y() {return this.view.coords[this.json.id] ? this.view.coords[this.json.id].y : this.parent ? this.parent.getChildOffest(this).dy : 0}
+    get svg_x() {return this.view.coords[this.json.id] ? this.view.coords[this.json.id].x : this.parent ? this.parent.getChildOffset(this).dx : 0}
+    get svg_y() {return this.view.coords[this.json.id] ? this.view.coords[this.json.id].y : this.parent ? this.parent.getChildOffset(this).dy : 0}
     get svg_width() {return this.view.coords[this.json.id] ? this.view.coords[this.json.id].width : this.collapsed ? this.collapsed_dimensions.width : this.dimensions.width}
     get svg_height() {return this.view.coords[this.json.id] ? this.view.coords[this.json.id].height : this.collapsed ? this.collapsed_dimensions.height : this.dimensions.height}
     get svg_definition() {
@@ -577,7 +577,7 @@ class OkitResource {
             dy: this.padding_top + (this.has_top_children ? this.top_child_group_height + this.spacing_dy : 0) + (this.has_container_children ? this.container_child_group_height + this.spacing_dy : 0)
         }
     }
-   get bottom_child_offset() {
+    get bottom_child_offset() {
         let offset = this.first_bottom_offset
         const children = this.document.getElementById(this.svg_id).querySelectorAll(`${this.bottom_children.map(c => "[data-okit-resource='"+c.toLowerCase()+"']").join(',')}`)
         offset.dx += Array.from(children.values()).reduce((a, v) => a + (Number(v.getAttribute('width')) + this.spacing_dx), 0)
@@ -708,7 +708,7 @@ class OkitResource {
     }
 
     // -- Child Functions
-    getChildOffest(child) {
+    getChildOffset(child) {
         let offset = {dx: 10, dy:10}
         // console.info('This Class Name  :', this.constructor.name, this.id)
         // console.info('Child Class Name :', child.constructor.name, child.id)

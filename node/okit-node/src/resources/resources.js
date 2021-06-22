@@ -8,6 +8,7 @@
 */
 
 export { OkitResource } from './okit_resource.js'
+export { OkitContainerResource } from './okit_resource.js'
 export { AutonomousDatabase } from './autonomous_database/autonomous_database.js'
 export { Bucket } from './bucket/bucket.js'
 export { Cluster } from './cluster/cluster.js'

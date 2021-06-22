@@ -56,15 +56,15 @@ class OkitView {
 
     get class_name() {return this.constructor.name}
     get json () {return this.okit_data.okit} 
-    get coords() {return this.json.views[this.class_name] && this.json.views[this.class_name].region[this.region] ? this.json.views[this.class_name].region[this.region].coords : this.newCoords().coords}
+    // get coords() {return this.json.views[this.class_name] && this.json.views[this.class_name].region[this.region] ? this.json.views[this.class_name].region[this.region].coords : this.newCoords().coords}
+    get coords() {return this.json.views[this.class_name] ? this.json.views[this.class_name].coords : this.newCoords().coords}
     // get coords() {return this.okit_data.okit.coords}
     get svg() {return this.okit_data.okit.svg}
     get canvas_rect_id() {return `${this.canvas_svg_id}-rect`}
 
     newCoords() {
-        if (this.json.views[this.class_name] === undefined) this.json.views[this.class_name] = {region: {}}
-        this.json.views[this.class_name].region[this.region] = {coords: {}, connectors: {}}
-        return this.json.views[this.class_name].region[this.region]
+        if (this.json.views[this.class_name] === undefined) this.json.views[this.class_name] = {coords: {}, connectors: {}}
+        return this.json.views[this.class_name]
     }
 
     clear() {

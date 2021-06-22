@@ -56,5 +56,6 @@ if (command.toLocaleLowerCase() === 'generate') {
 
         console.info('')
         console.info(`OKIT Output Written to : ${output_filename}`)
+        okitView.autoLayout()
     }
 }
