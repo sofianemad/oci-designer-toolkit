@@ -51,11 +51,11 @@ if (command.toLocaleLowerCase() === 'generate') {
         const okitJsonImporter = new OkitJsonImporter(input_data)
         const okitData = okitJsonImporter.convert()
         const okitView = new OkitCompartmentContainerView(okitData, document, 'okit-canvas-div', undefined, false, 'none', false, true)
-        okitView.draw()
+        okitView.autoLayout()
+        // okitView.draw()
         fs.writeFileSync(output_filename, okitData.toString())
 
         console.info('')
         console.info(`OKIT Output Written to : ${output_filename}`)
-        okitView.autoLayout()
     }
 }

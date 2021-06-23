@@ -57,14 +57,18 @@ class OkitResource {
             this.drawText(svg, this.svg_label_text, document)
             this.drawTitle(svg, document)
             this.drawIcon(svg, document)
-            // console.info(this.parent_id, this.parent)
             const canvas = document.getElementById(this.parent ? this.parent.svg_id : this.view.canvas_svg_id)
+            // console.info(this.parent_id, this.parent)
+            // console.info('Canvas:', canvas)
+            // // console.info('Document', document)
+            // console.info('=====================================')
             canvas.appendChild(svg)
         }
     }
 
     drawSvg(document) {
-        const definition = this.view.coords[this.json.id] ? this.view.coords[this.json.id] : this.svg_definition
+        // const definition = this.view.coords[this.json.id] ? this.view.coords[this.json.id] : this.svg_definition
+        const definition = this.svg_definition
         const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg')
         svg.setAttribute('id', definition.id)
         svg.setAttribute('x', definition.x)
@@ -384,14 +388,24 @@ class OkitResource {
     get svg_height() {return this.view.coords[this.json.id] ? this.view.coords[this.json.id].height : this.collapsed ? this.collapsed_dimensions.height : this.dimensions.height}
     get svg_definition() {
         // console.info('Coords:', this.view.coords[this.json.id])
-        return this.view.coords[this.json.id] ? this.view.coords[this.json.id] : {
+        if (this.view.coords[this.json.id] === undefined) this.view.coords[this.json.id] = {x: this.svg_x, y: this.svg_y, width: this.svg_width, height: this.svg_height, parent_id: this.parent_id}
+        const coords = this.view.coords[this.json.id]
+        return {
             id: this.svg_id,
-            x: this.svg_x,
-            y: this.svg_y,
-            width: this.svg_width,
-            height: this.svg_height,
+            x: coords.x,
+            y: coords.y,
+            width: coords.width,
+            height: coords.height,
             viewbox: this.viewbox
         }
+        // return this.view.coords[this.json.id] ? this.view.coords[this.json.id] : {
+        //     id: this.svg_id,
+        //     x: this.svg_x,
+        //     y: this.svg_y,
+        //     width: this.svg_width,
+        //     height: this.svg_height,
+        //     viewbox: this.viewbox
+        // }
     }
     // ---- ViewBox
     get viewbox_x() {return 0}

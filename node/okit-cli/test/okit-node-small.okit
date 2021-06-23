@@ -272,85 +272,75 @@
   "views": {
     "OkitCompartmentContainerView": {
       "coords": {
-        "okit.compartment.8dca67e8-7852-4655-a7ad-a961917c646b": {
-          "id": "okit.compartment.8dca67e8-7852-4655-a7ad-a961917c646b-svg",
-          "x": 0,
-          "y": 0,
-          "width": 510,
-          "height": 705,
-          "viewbox": "0 0 510 705"
-        },
-        "okit.virtualcloudnetwork.27cf5c39-1d34-48fc-97db-16716c2b9a53": {
-          "id": "okit.virtualcloudnetwork.27cf5c39-1d34-48fc-97db-16716c2b9a53-svg",
+        "okit.instance.a525d837-9326-4561-8b93-8dca4cefb1bc": {
           "x": 60,
           "y": 60,
-          "width": 390,
-          "height": 565,
-          "viewbox": "0 0 390 565"
+          "width": 45,
+          "height": 45,
+          "parent_id": "okit.subnet.78468383-426e-45dd-a355-648e7d975425"
+        },
+        "okit.instance.6396e944-2ad6-40d1-b07b-9d56f1d368c7": {
+          "x": 125,
+          "y": 60,
+          "width": 45,
+          "height": 45,
+          "parent_id": "okit.subnet.78468383-426e-45dd-a355-648e7d975425"
         },
         "okit.internetgateway.2f544252-ee9a-4652-9492-53b243fd430f": {
-          "id": "okit.internetgateway.2f544252-ee9a-4652-9492-53b243fd430f-svg",
           "x": 120,
           "y": 0,
           "width": 45,
           "height": 45,
-          "viewbox": "0 0 45 45"
+          "parent_id": "okit.virtualcloudnetwork.27cf5c39-1d34-48fc-97db-16716c2b9a53"
         },
-        "okit.routetable.bed22c58-327c-43aa-9e88-0f00b94dd9ac": {
-          "id": "okit.routetable.bed22c58-327c-43aa-9e88-0f00b94dd9ac-svg",
+        "okit.loadbalancer.a67f339e-cce6-4300-a53f-69af83be9334": {
           "x": 60,
           "y": 60,
           "width": 45,
           "height": 45,
-          "viewbox": "0 0 45 45"
+          "parent_id": "okit.subnet.b504a7ca-c0bf-46c7-b83a-2d5b79d9b762"
+        },
+        "okit.routetable.bed22c58-327c-43aa-9e88-0f00b94dd9ac": {
+          "x": 60,
+          "y": 60,
+          "width": 45,
+          "height": 45,
+          "parent_id": "okit.virtualcloudnetwork.27cf5c39-1d34-48fc-97db-16716c2b9a53"
         },
         "okit.securitylist.4b230827-b537-435e-bc1b-41f754c9f228": {
-          "id": "okit.securitylist.4b230827-b537-435e-bc1b-41f754c9f228-svg",
           "x": 125,
           "y": 60,
           "width": 45,
           "height": 45,
-          "viewbox": "0 0 45 45"
+          "parent_id": "okit.virtualcloudnetwork.27cf5c39-1d34-48fc-97db-16716c2b9a53"
+        },
+        "okit.compartment.8dca67e8-7852-4655-a7ad-a961917c646b": {
+          "x": 0,
+          "y": 0,
+          "width": 510,
+          "height": 740,
+          "parent_id": null
         },
         "okit.subnet.b504a7ca-c0bf-46c7-b83a-2d5b79d9b762": {
-          "id": "okit.subnet.b504a7ca-c0bf-46c7-b83a-2d5b79d9b762-svg",
           "x": 60,
           "y": 125,
           "width": 270,
-          "height": 170,
-          "viewbox": "0 0 270 170"
+          "height": 220,
+          "parent_id": "okit.virtualcloudnetwork.27cf5c39-1d34-48fc-97db-16716c2b9a53"
         },
         "okit.subnet.78468383-426e-45dd-a355-648e7d975425": {
-          "id": "okit.subnet.78468383-426e-45dd-a355-648e7d975425-svg",
           "x": 60,
-          "y": 315,
+          "y": 365,
           "width": 270,
-          "height": 170,
-          "viewbox": "0 0 270 170"
+          "height": 220,
+          "parent_id": "okit.virtualcloudnetwork.27cf5c39-1d34-48fc-97db-16716c2b9a53"
         },
-        "okit.instance.a525d837-9326-4561-8b93-8dca4cefb1bc": {
-          "id": "okit.instance.a525d837-9326-4561-8b93-8dca4cefb1bc-svg",
+        "okit.virtualcloudnetwork.27cf5c39-1d34-48fc-97db-16716c2b9a53": {
           "x": 60,
           "y": 60,
-          "width": 45,
-          "height": 45,
-          "viewbox": "0 0 45 45"
-        },
-        "okit.instance.6396e944-2ad6-40d1-b07b-9d56f1d368c7": {
-          "id": "okit.instance.6396e944-2ad6-40d1-b07b-9d56f1d368c7-svg",
-          "x": 125,
-          "y": 60,
-          "width": 45,
-          "height": 45,
-          "viewbox": "0 0 45 45"
-        },
-        "okit.loadbalancer.a67f339e-cce6-4300-a53f-69af83be9334": {
-          "id": "okit.loadbalancer.a67f339e-cce6-4300-a53f-69af83be9334-svg",
-          "x": 60,
-          "y": 60,
-          "width": 45,
-          "height": 45,
-          "viewbox": "0 0 45 45"
+          "width": 390,
+          "height": 600,
+          "parent_id": "okit.compartment.8dca67e8-7852-4655-a7ad-a961917c646b"
         }
       },
       "connectors": {}
