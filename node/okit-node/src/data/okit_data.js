@@ -64,4 +64,4 @@ class OkitData {
 }
 
 export default OkitData
-// export { OkitData }
+export { OkitData }

@@ -11,42 +11,42 @@ import { OkitSchemaImporter } from './okit_schema_importer.js'
 
 class OkitTerraformSchemaImporter extends OkitSchemaImporter {
     resource_map = {
-        // oci_containerengine_cluster: 'cluster',
-        // oci_containerengine_node_pool: 'node_pool',
+        oci_containerengine_cluster: 'cluster',
+        oci_containerengine_node_pool: 'node_pool',
 
-        // oci_core_cpe: 'cpe',
-        // oci_core_dhcp_options: 'dhcp_options',
-        // oci_core_drg: 'drg',
-        // oci_core_instance: 'instance',
-        // oci_core_instance_pool: 'instance_pool',
-        // oci_core_internet_gateway: 'internet_gateway',
-        // oci_core_ipsec: 'ipsec',
-        // oci_core_local_peering_gateway: 'local_peering_gateway',
-        // oci_core_nat_gateway: 'nat_gateway',
-        // oci_core_network_security_group: 'network_security_group',
-        // oci_core_remote_peering_connection: 'remote_peering_connection',
-        // oci_core_route_table: 'route_table',
+        oci_core_cpe: 'cpe',
+        oci_core_dhcp_options: 'dhcp_options',
+        oci_core_drg: 'drg',
+        oci_core_instance: 'instance',
+        oci_core_instance_pool: 'instance_pool',
+        oci_core_internet_gateway: 'internet_gateway',
+        oci_core_ipsec: 'ipsec',
+        oci_core_local_peering_gateway: 'local_peering_gateway',
+        oci_core_nat_gateway: 'nat_gateway',
+        oci_core_network_security_group: 'network_security_group',
+        oci_core_remote_peering_connection: 'remote_peering_connection',
+        oci_core_route_table: 'route_table',
         oci_core_security_list: 'security_list',
-        // oci_core_service_gateway: 'service_gateway',
-        // oci_core_subnet: 'subnet',
+        oci_core_service_gateway: 'service_gateway',
+        oci_core_subnet: 'subnet',
         oci_core_vcn: 'vcn',
-        // oci_core_volume: 'volume',
-        // oci_core_volume_group: 'volume_group',
+        oci_core_volume: 'volume',
+        oci_core_volume_group: 'volume_group',
 
-        // oci_database_autonomous_database: 'autonomous_database',
-        // oci_database_db_system: 'db_system',
+        oci_database_autonomous_database: 'autonomous_database',
+        oci_database_db_system: 'db_system',
 
-        // oci_file_storage_file_system: 'file_system',
+        oci_file_storage_file_system: 'file_system',
 
         oci_identity_compartment: 'compartment',
 
-        // oci_load_balancer_load_balancer: 'load_balancer',
-        // oci_load_balancer_backend: 'backend',
-        // oci_load_balancer_backend_set: 'backend_set',
+        oci_load_balancer_load_balancer: 'load_balancer',
+        oci_load_balancer_backend: 'backend',
+        oci_load_balancer_backend_set: 'backend_set',
 
-        // oci_mysql_mysql_db_system: 'mysql_db_system',
+        oci_mysql_mysql_db_system: 'mysql_db_system',
 
-        // oci_objectstorage_bucket: 'bucket',
+        oci_objectstorage_bucket: 'bucket',
     }
     ignore_elements = {
         common: [
@@ -63,6 +63,17 @@ class OkitTerraformSchemaImporter extends OkitSchemaImporter {
             'default_security_list_id',
             'ipv6public_cidr_block',
             'vcn_domain_name'
+        ],
+        oci_database_autonomous_database: [
+            'time_deletion_of_free_autonomous_database',
+            'time_maintenance_begin',
+            'time_maintenance_end',
+            'time_of_last_failover',
+            'time_of_last_refresh',
+            'time_of_last_refresh_point',
+            'time_of_last_switchover',
+            'time_of_next_refresh',
+            'time_reclamation_of_free_autonomous_database'
         ]
     }
 
@@ -83,7 +94,7 @@ class OkitTerraformSchemaImporter extends OkitSchemaImporter {
         const ignore_block_types = ['timeouts']
         const ignore_attributes = this.ignore_elements[key] ? [...this.ignore_elements.common, ...this.ignore_elements[key]] : this.ignore_elements.common
         // Simple attributes
-        let attributes = Object.entries(block.attributes).filter(([k, v]) => !ignore_attributes.includes(k)).reduce((r, [k, v]) => {
+        let attributes = block.attributes ? Object.entries(block.attributes).filter(([k, v]) => !ignore_attributes.includes(k)).reduce((r, [k, v]) => {
             r[k] = {
                 type: Array.isArray(v.type) ? v.type[0] : v.type,
                 subtype: '',
@@ -92,7 +103,7 @@ class OkitTerraformSchemaImporter extends OkitSchemaImporter {
                 id: [...hierarchy, k].join('.')
             }
             return r
-        }, {})
+        }, {}) : {}
         // Block / Object Attributes
         if (block.block_types) {
             attributes = Object.entries(block.block_types).filter(([k, v]) => !ignore_block_types.includes(k)).reduce((r, [k, v]) => {

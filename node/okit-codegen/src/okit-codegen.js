@@ -9,7 +9,7 @@
 
 import fs from 'fs'
 import path from 'path'
-import { OkitData } from 'okit-node/src/data/okit.js'
+import { OkitData } from 'okit-node/src/data/okit_data.js'
 import { OkitModelGenerator } from './code_generation/okit_model_generator.js'
 import { OkitPropertiesGenerator } from './code_generation/okit_properties_generator.js'
 import { OkitTerraformGenerator } from './code_generation/okit_terraform_generator.js'
@@ -37,10 +37,12 @@ if (command.toLocaleLowerCase() === 'generate') {
         else if (subcommand.toLocaleLowerCase() === 'okit-terraform-js') generator = new OkitTerraformGenerator()
         Object.entries(schema).forEach(([key, value]) => {
             generator.generate(key, value)
-            const file_dir = path.join(output_dir, key)
-            const file_name = path.join(file_dir, `${key}.js`)
-            const super_file_name = path.join(file_dir, generator.generateSuperClassFilename(key))
+            const file_dir = path.join(output_dir, generator.generateClassDir(key))
+            const super_file_dir = path.join(output_dir, generator.generateClassDir(key), generator.generateSuperClassDir(key))
+            const file_name = path.join(file_dir, generator.generateClassFilename(key))
+            const super_file_name = path.join(super_file_dir, generator.generateSuperClassFilename(key))
             if (!fs.existsSync(file_dir)) fs.mkdirSync(file_dir, {recursive: true})
+            if (!fs.existsSync(super_file_dir)) fs.mkdirSync(super_file_dir, {recursive: true})
             fs.writeFileSync(super_file_name, generator.resource_class_file)
             if (!fs.existsSync(file_name)) fs.writeFileSync(file_name, generator.resource_custom_class_file)
         })

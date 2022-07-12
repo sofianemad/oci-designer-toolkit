@@ -8,6 +8,7 @@
 */
 
 class OkitCodeGenerator {
+    prefix = 'Oci'
     common_elements = [
         'compartment_id', // Common Element
         'defined_tags',   // Common Element
@@ -66,10 +67,10 @@ class OkitCodeGenerator {
 */`
     }
 
-    get author() {
-        return `
-/*
-** Author: Andrew Hopkinson
+    get copyright1() {
+        return `/*
+** Copyright (c) 2021, Andrew Hopkinson.
+** Licensed under the GNU GENERAL PUBLIC LICENSE v 3.0 as shown at https://www.gnu.org/licenses/.
 */`
     }
 
@@ -100,11 +101,10 @@ class OkitCodeGenerator {
 
     generateResourcesFile(resources) {
         const contents = `${this.copyright}
-${this.author}
 ${this.auto_generated_warning}
         
 export { ${this.root_class} } from './${this.root_class_js}'
-${resources.map((r) => 'export { ' + this.titleCase(r.split('_').join(' ')).split(' ').join('') + " } from './" + r + '/' + r + ".js'").join('\n')}
+${resources.map((r) => 'export { ' + this.generateClassName(r) + " } from './" + this.generateClassDir(r) + '/' + this.generateClassFilename(r) + "'").join('\n')}
     `
             return contents
     }
@@ -113,18 +113,13 @@ ${resources.map((r) => 'export { ' + this.titleCase(r.split('_').join(' ')).spli
 
     generateCustomResourceClass(resource) {
         const super_class_name = this.generateSuperClassName(resource)
-        const super_class_filename = this.generateSuperClassFilename(resource)
+        const super_class_filename = `./${this.generateSuperClassDir(resource)}/${this.generateSuperClassFilename(resource)}`
         const class_name = this.generateClassName(resource)
         const contents = `${this.copyright}
-${this.author}
 
 import { ${super_class_name} } from '${super_class_filename}'
 
-class ${class_name} extends ${super_class_name} {
-    constructor(resource) {
-        super(resource)
-    }
-}
+class ${class_name} extends ${super_class_name} {}
 
 export default ${class_name}
 export { ${class_name} }
@@ -132,11 +127,18 @@ export { ${class_name} }
         return contents
     }
 
-    generateClassName(resource) {return this.titleCase(resource.split('_').join(' ')).split(' ').join('')}
+    generateClassName(resource) {return `${this.prefix}${this.titleCase(resource.split('_').join(' ')).split(' ').join('')}`}
+
+    generateClassFilename(resource) {return `${this.generateClassName(resource)}.js`}
+
+    generateClassDir(resource) {return 'resources'}
 
     generateSuperClassName(resource) {return `${this.generateClassName(resource)}Resource`}
 
-    generateSuperClassFilename(resource) {return `${resource}_resource.js`}
+    generateSuperClassFilename(resource) {return `${this.generateSuperClassName(resource)}.js`}
+    // generateSuperClassFilename(resource) {return `${resource}_resource.js`}
+
+    generateSuperClassDir(resource) {return 'generated'}
 
     titleCase(str) {
         return str.replace(/\w\S*/g, (txt) => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase())
