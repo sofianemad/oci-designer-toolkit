@@ -2,7 +2,7 @@ export OKIT_DIR=~/okit
 file="$OKIT_DIR/log/okit.log"
 mkdir -p $(dirname $file) && touch "$file"
 
-$TARGET_DIR = "oci-designer-toolkit"
+TARGET_DIR="oci-designer-toolkit"
 cd ~
 git -C "$TARGET_DIR" pull || git clone https://github.com/oracle/oci-designer-toolkit "$TARGET_DIR"
 
