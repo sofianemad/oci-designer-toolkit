@@ -7,19 +7,20 @@
             border: solid 2px black;
       }
    </style>
+   <script>
+      function sendMessage() {
+         const okitIframe = document.getElementById('okit');
+         const message = 'templates/reference_architecture/oci/infrastructure/ha_web_application.json';
+         const targetOrigin = 'http://localhost:8080';
+         okitIframe.contentWindow.postMessage(message, targetOrigin);
+      }
+   </script>
 </head>
 <body style="text-align: center;">
    <h2>Test embedded okit</h2>
    <button onclick="sendMessage()">Send Message</button><p>
-   <embed id="okit" type="text/html" style='border:1px solid black;' src="http://localhost:8080/okit/oci" width="500px" height="500px">
+   <iframe id="okit" style='border:1px solid black;' src="http://localhost:8080/okit/oci" width="500px" height="500px">
 
-     <script>
-      function sendMessage() {
-        const otherWindow = document.querySelector("#okit").contentWindow;
-        const message = 'Hello from Origin 1!';
-        const targetOrigin = 'https://origin2.com';
-        otherWindow.postMessage(message, targetOrigin);
-      }
-    </script>
+
 </body>
 </html>

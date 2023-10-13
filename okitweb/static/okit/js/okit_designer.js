@@ -871,7 +871,7 @@ function loadTemplate(template_url) {
             displayTreeView();
             slideLeftPanel('icons_palette')
             // Display Documentation
-            slideRightPanel('documentation_panel')
+            // slideRightPanel('documentation_panel')
         },
         error: function(xhr, status, error) {
             console.error('Status : '+ status);
