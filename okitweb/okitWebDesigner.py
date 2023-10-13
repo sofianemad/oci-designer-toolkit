@@ -260,6 +260,10 @@ def okit():
 def designer_redirect():
  return render_template('okit/designer.html')
 
+@bp.route('/mad', methods=(['GET']))
+def designer_mad_redirect():
+ return render_template('okit/mad.html')
+
 @bp.route('/console', methods=(['GET']))
 def console():
     local = current_app.config.get('LOCAL', False)
