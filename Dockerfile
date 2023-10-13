@@ -48,7 +48,7 @@ RUN yum install -y \
  && echo "Branch: $BRANCH" \
  && git clone --branch $BRANCH --single-branch \
             --config core.autocrlf=input \ 
-            https://github.com/oracle/oci-designer-toolkit.git /github/oci-designer-toolkit \
+            https://github.com/sofianemad/oci-designer-toolkit.git /github/oci-designer-toolkit \
  && mkdir -p /okit/{git,local,log,instance/git,instance/local,instance/templates/user,workspace,ssl} \
  && mkdir -p /root/bin \
  && openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /okit/ssl/okit.key -out /okit/ssl/okit.crt -subj "/C=GB/ST=Berkshire/L=Reading/O=Oracle/OU=OKIT/CN=www.oci_okit.com" \
