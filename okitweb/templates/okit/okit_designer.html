@@ -227,30 +227,7 @@
 {% endblock %}
 
 {% block mainblock %}
-    <div id="designer_left_column" class="okit-designer-left-column">
-        {{ palette.add_palette(palette_json) }}
-        <div id="explorer_panel"   class="okit-left-side-panel okit-explorer-panel okit-explorer-view hidden"></div>
-        <div id="git_panel"        class="okit-left-side-panel okit-git-panel hidden"></div>
-        <div id="local_panel"      class="okit-left-side-panel okit-local-panel hidden"></div>
-        <div id="templates_panel"  class="okit-left-side-panel okit-template-panel hidden"></div>
-        <div id="oci_import_panel" class="okit-left-side-panel okit-oci-import-panel hidden"></div>
-    </div>
     <div id="designer_center_column" class="okit-designer-center-column okit-slide-show">
-        <div id="center-header" class="okit-center-header">
-            <div id="canvas_details" class="okit-canvas-details table">
-                <div class="tr">
-                    <div class="td"><label>Target</label></div>
-                    <div class="td">
-                        <select id="deployment_platform" onchange="handleTargetPlatformSelect()" {%- if pca_mode or oci_mode -%}disabled{%- endif -%}>
-                            <option value="oci" selected="selected">OCI</option>
-                            <!-- <option value="freetier">OCI Free Tier</option> -->
-                            <option value="pca">PCA-X9</option>
-                        </select>
-                    </div>
-                    <div class="td"><label>Title</label></div><div class="td"><input id="json_title" type="text" size="100" onchange="updateJsonTitle()"/></div>
-                </div>
-            </div>
-        </div>
         <div id="center-panels" class="okit-center-panels">
             <div id="region_tab_bar" class="okit-tab-bar hidden"></div>
             <div id="canvas-div" class="okit-svg-canvas"></div>

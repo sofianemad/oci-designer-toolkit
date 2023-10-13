@@ -35,54 +35,11 @@
 </head>
 <body>
     <div class="okit-console">
-        <div class="okit-header-gradient"></div>
-        <div id="okit_header" class="table okit-header">
-            <div class="tr okit-console-header">
-                <div class="td okit-console-header-left-nav-button">
-                    <button id="navigation_menu_button" class="okit-navigation-menu-button">
-                        <div class="okit-navigation-menu-button-icon hamburger">
-                        </div>
-                    </button>
-                </div>
-                <div class="td okit-white okit-logo"></div>
-                {%- if pca_mode -%}<div class="td oracle-console-pca-logo"></div>{%- endif -%} 
-                {%- if c3_mode -%}<div class="td oracle-console-c3-logo"></div>{%- endif -%} 
-                {%- if oci_mode -%}<div class="td oracle-console-logo"></div>{%- endif -%}
-                <div class="td"></div>
-                {% if local_okit %}
-                <div id="config_link_div" class="td okit-console-header-icon config_alert collapsed"><a id="config_link" class="okit-icon-link" href="#" onclick="showConfigErrors(); return false;"></a></div>
-                <div class="td okit-console-header-dropdown"><select id="console_header_config_select" onchange="handleConfigChanged()">
-                    <option value="DEFAULT" selected="selected">DEFAULT</option>
-                </select></div>
-                <div class="td okit-console-header-dropdown"><select id="console_header_region_select" onchange="handleRegionChanged()">
-                    <option value="" selected="selected">Loading.....</option>
-                </select></div>
-                {%- if oci_mode -%}<div id="session_config" class="td okit-console-header-icon session-config"><a id="config_link" class="okit-icon-link" href="#" onclick="showSessionConfigDialog(); return false;"></a></div>{%- endif -%}
-                <div class="td okit-console-header-icon cloud"><a id="oci_link" class="okit-icon-link" href="https://cloud.oracle.com/?region=us-ashburn-1" target="_blank" rel="noopener noreferrer"></a></div>
-                <!-- <div class="td okit-console-header-icon cloud"><a id="oci_link" class="okit-icon-link" href="https://console.us-phoenix-1.oraclecloud.com" target="_blank" rel="noopener noreferrer"></a></div> -->
-                {% elif session['username'] %}
-                <div class="td okit-console-header-right"><a href="javascript:void(0)">{{ session['username'] }}</a>&nbsp;&nbsp;<a href="{{ session['logout'] }}">Logout</a></div>
-                <div class="td okit-console-header-icon cloud"><a id="oci_link" class="okit-icon-link" href="https://cloud.oracle.com/?region={{ session['home_region'] }}&tenant={{ session['tenant'] }}&provider=OracleIdentityCloudService" target="_blank" rel="noopener noreferrer"></a></div>
-                <!-- <div class="td okit-console-header-icon cloud"><a id="oci_link" class="okit-icon-link" href="https://console.{{ session['home_region'] }}.oraclecloud.com/?tenant={{ session['tenant'] }}&provider=OracleIdentityCloudService" target="_blank" rel="noopener noreferrer"></a></div> -->
-                {% else %}
-                <div class="td okit-console-header-right"><a href="/okit/login">Login</a></div>
-                {% endif %}
-            </div>
-        </div>
         <div class="okit-console-main">
-            <div id="navigation_menu" class="okit-navigation-menu">{% block navmenublock %}{% endblock %}</div>
-            <div id="okit_toolbar" class="okit-toolbar">{% block toolbarblock %}{% endblock %}</div>
             <div class="main okit-console-main-body">
-                <div id="console_left_bar" class="okit-console-left-bar"></div>
                 <div class="okit-console-main-center">{% block mainblock %}{% endblock %}</div>
                 <div id="console_right_bar" class="okit-console-right-bar hidden"></div>
             </div>
-        </div>
-        <div class="footer okit-console-footer">
-            <div class="okit-version-div"><label id="okit_version">Version</label></div>
-            <div class="okit-update-div"><a id="okit_update" href="#" target="_blank" rel="noopener noreferrer"></a></div>
-            <div>{% block footerblock %}{% endblock %}</div>
-            <div class="okit-copyright">Copyright (c) 2020, 2022, Oracle and/or its affiliates.</div>
         </div>
     </div>
     {% block bodyendblock %}{% endblock %}
