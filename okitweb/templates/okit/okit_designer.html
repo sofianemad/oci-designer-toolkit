@@ -9,6 +9,15 @@
 {% import "okit/palette_macros.jinja2" as palette with context %}
 
 {% block headscripts %}
+    <script>
+        window.addEventListener('message', receiveMessage, false);
+
+        function receiveMessage(event) {
+            if (event.origin === 'https://origin1.com') {
+                alert('Received message: ' + event.data);
+            }
+        }
+    </script>
     <script type="text/javascript" src="{{ url_for('static', filename='okit/js/okit.js') }}"></script>
     <script type="text/javascript" src="{{ url_for('static', filename='okit/js/okit_views.js') }}"></script>
     {% for js_file in resource_files.js %}
