@@ -13,10 +13,10 @@
         window.addEventListener('message', receiveMessage, false);
 
         function receiveMessage(event) {
-            if (event.origin === 'http://localhost:8080') {
-                loadTemplate(event.data)
+            if (event.origin === 'https://g5e60ebadf0d95a-db202112101358.adb.eu-frankfurt-1.oraclecloudapps.com') {
+                loadTemplate(event.data);
             }
-        }
+    }
     </script>
     <script type="text/javascript" src="{{ url_for('static', filename='okit/js/okit.js') }}"></script>
     <script type="text/javascript" src="{{ url_for('static', filename='okit/js/okit_views.js') }}"></script>
