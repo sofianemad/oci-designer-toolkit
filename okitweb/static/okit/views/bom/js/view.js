@@ -116,7 +116,8 @@ class OkitBoMView extends OkitJsonView {
         console.info('Estimate Total', estimate)
         // this.header_estimate.property('value', `${this.currencies[this.currency].symbol}${(Math.round((estimate + Number.EPSILON) * 100)/100).toFixed(2)}`)
         // this.header_estimate.text(`${this.currencies[this.currency].symbol}${(Math.round((estimate + Number.EPSILON) * 100)/100).toFixed(2)}`)
-        this.header_estimate.text(OkitOciProductPricing.formatPrice(estimate, this.currency))
+        // this.header_estimate.text(OkitOciProductPricing.formatPrice(estimate, this.currency))
+        return OkitOciProductPricing.formatPrice(estimate, this.currency)
     }
 
     drawEstimatePanel() {

@@ -14,9 +14,18 @@
 
         function receiveMessage(event) {
             if (event.origin === 'https://g5e60ebadf0d95a-db202112101358.adb.eu-frankfurt-1.oraclecloudapps.com') {
-                loadTemplate(event.data);
+                loadModelFromJson(event.data);
+                okitBoMView = OkitBoMView.newView(okitJsonModel, okitOciData, resource_icons);
+                okitBoMView.currency = "EUR"
+                okitBoMView.newCanvas();
+                okitBoMView.getBoM();
+                est = okitBoMView.drawBoMPanel();
+                sendMessage(est)
             }
-    }
+        }
+        function sendMessage(msg) {
+            parent.postMessage(msg, 'https://g5e60ebadf0d95a-db202112101358.adb.eu-frankfurt-1.oraclecloudapps.com');
+        }
     </script>
     <script type="text/javascript" src="{{ url_for('static', filename='okit/js/okit.js') }}"></script>
     <script type="text/javascript" src="{{ url_for('static', filename='okit/js/okit_views.js') }}"></script>
