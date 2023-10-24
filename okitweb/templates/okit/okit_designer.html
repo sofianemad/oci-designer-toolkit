@@ -14,13 +14,25 @@
 
         function receiveMessage(event) {
             if (event.origin === 'https://g5e60ebadf0d95a-db202112101358.adb.eu-frankfurt-1.oraclecloudapps.com') {
-                loadModelFromJson(event.data);
-                okitBoMView = OkitBoMView.newView(okitJsonModel, okitOciData, resource_icons);
-                okitBoMView.currency = "EUR"
-                okitBoMView.newCanvas();
-                okitBoMView.getBoM();
-                est = okitBoMView.drawBoMPanel();
-                sendMessage(est)
+                msgAsJson = JSON.parse(event.data);
+
+                if (msgAsJson.action == "drawFromJson") {
+                    loadModelFromJson(msgAsJson.content);
+                    okitBoMView = OkitBoMView.newView(okitJsonModel, okitOciData, resource_icons);
+                    okitBoMView.currency = "EUR"
+                    okitBoMView.newCanvas();
+                    okitBoMView.getBoM();
+                    est = okitBoMView.drawBoMPanel();
+                    sendMessage(est)
+                }
+
+                if (msgAsJson.action == "downloadImage") {
+                    saveAsImage('png');
+                }
+
+                if (msgAsJson.action == "generateTerraform") {
+                    handleExportToTerraformLocal()
+                }
             }
         }
         function sendMessage(msg) {
