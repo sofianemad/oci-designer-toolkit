@@ -1,26 +1,862 @@
 <!DOCTYPE html>
 <html>
+
 <head>
    <title>Embed tag in HTML</title>
    <style>
+      #bom-div {
+    overflow: hidden;
+}
+
+#bom-div * {
+    box-sizing: border-box; overflow: hidden;
+}
+
+#bom-div html {
+    max-width: 100%;
+    width: 100%;
+    min-width: 100%;
+    position: fixed;
+}
+
+#bom-div canvas {
+    display: block;
+}
+
+#bom-div div {
+    display: block;
+}
+
+#bom-div button {
+    font-family: Helvetica Neue,Helvetica,Arial,sans-serif;
+    border-width: 1px;
+    border-color: black;
+    border-radius: 4px;
+    text-align: center;
+    /*font-weight: bold;*/
+}
+
+#bom-div body {
+    margin: 0;
+    padding: 0;
+    font-family: Helvetica Neue,Helvetica,Arial,sans-serif;
+}
+
+#bom-div ul {
+    display: block;
+    list-style-type: disc;
+    margin-block-start: 1em;
+    margin-block-end: 1em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+    padding-inline-start: 40px;
+}
+
+#bom-div details {
+    display: block;
+    margin-top: 1em;
+}
+
+#bom-div details:not([open]) {
+    transition: all 2.5s ease-in-out;
+}
+
+#bom-div details[open] {
+    transition: all 2.5s ease-in-out;
+}
+
+#bom-div pre {
+    margin: 0;
+    font-family: Helvetica Neue,Helvetica,Arial,sans-serif;
+}
+
+#bom-div summary {
+    width: 100%;
+    font-weight: bold;
+    font-family: Helvetica Neue,Helvetica,Arial,sans-serif;
+    min-height: 20px;
+    display: inline-block;
+    vertical-align: middle;
+    text-align: left;
+    margin-bottom: 5px;
+}
+
+#bom-div textarea {
+    width: 100%;
+    height: 100%;
+    resize: none;
+    font-family: Helvetica Neue,Helvetica,Arial,sans-serif;
+    overflow: auto;
+    margin: 2px;
+}
+
+#bom-div input:read-only {
+    opacity: 0.5;
+}
+
+/* input:focus {
+    background-color: #1d2733;
+} */
+
+#bom-div details > summary::-webkit-details-marker {
+    display:none;
+}
+
+#bom-div details > summary:after {
+    border-radius: 5px;
+    content: "+";
+    color: #aeaeae;
+    float: right;
+    margin: 2px;
+    padding: 0;
+    text-align: center;
+    width: 10px;
+}
+
+#bom-div details[open] > summary:after {
+    content: "-";
+}
+
+#bom-div details:focus {
+    outline: none;
+}
+
+#bom-div summary:focus {
+    outline: none;
+}
+
+/*
+** OKIT Common
+*/
+
+#bom-div .hamburger {
+    background-image: url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiPjxkZWZzPjxwYXRoIGQ9Ik0yMS41IDZoLTE5YS41LjUgMCAwMTAtMWgxOWEuNS41IDAgMDEwIDF6bTAgMTNoLTE5YS41LjUgMCAwMTAtMWgxOWEuNS41IDAgMDEwIDF6bTAtNi41aC0xOWEuNS41IDAgMDEwLTFoMTlhLjUuNSAwIDAxMCAxeiIgaWQ9InByZWZpeF9fYSIvPjwvZGVmcz48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxtYXNrIGlkPSJwcmVmaXhfX2IiIGZpbGw9IiNmZmYiPjx1c2UgeGxpbms6aHJlZj0iI3ByZWZpeF9fYSIvPjwvbWFzaz48dXNlIGZpbGw9IiMwMDAiIGZpbGwtcnVsZT0ibm9uemVybyIgeGxpbms6aHJlZj0iI3ByZWZpeF9fYSIvPjxnIG1hc2s9InVybCgjcHJlZml4X19iKSIgZmlsbD0iI0ZGRiIgZmlsbC1ydWxlPSJub256ZXJvIj48cGF0aCBkPSJNMCAwaDI0djI0SDB6Ii8+PC9nPjwvZz48L3N2Zz4=");
+}
+
+#bom-div .config_error {
+    background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxNjEuOSAxNjIiPjxnIGZpbGw9InJlZCI+PHBhdGggZD0iTTYwLjMgMzguNmMwLTcuNS02LjEtMTMuNy0xMy43LTEzLjdTMzMgMzEuMSAzMyAzOC42czYuMSAxMy43IDEzLjcgMTMuNyAxMy42LTYuMiAxMy42LTEzLjd6bS0yMC4zIDBhNi43IDYuNyAwIDExMTMuNCAwIDYuNyA2LjcgMCAwMS0xMy40IDB6TTY3LjggNzUuOHYtMS42YzAtMTAuNy04LjctMTkuMy0xOS4zLTE5LjNoLTMuNmMtMTAuNyAwLTE5LjMgOC43LTE5LjMgMTkuM3YxLjZoN3YtMS42YzAtNi44IDUuNS0xMi4zIDEyLjMtMTIuM2gzLjZjNi44IDAgMTIuMyA1LjUgMTIuMyAxMi4zdjEuNmg3eiIvPjxwYXRoIGQ9Ik0xOC4yIDgyLjRWMTguM2g5Ny4xdjQ1bDUuMi0yLjIgMy44IDEuNlY5LjNIOS4ydjgyLjFIODN2LTl6Ii8+PHBhdGggZD0iTTkzLjYgNzAuM2wzLjEtMy4xLTQuNy00LjcgNS00LjktMy4xLTMuMS00LjkgNS00LjctNC43LTMuMSAzIDQuNyA0LjctNSA1IDMuMSAzLjEgNS01ek04NC4yIDM1LjNsLTMuMyAyLjggNi44IDguMSAxMi41LTEzLjgtMy4yLTIuOS05LjIgMTAuMXpNMTUzIDExMS41di0zMGwtMzIuOC0xNC4xLTMyLjggMTQuMS4xIDMxLjguMS40YzQuOCAyNy43IDI5LjkgMzcuOSAzMC45IDM4LjRsMS45LjggMS44LS45YzMwLjgtMTUuOCAzMC44LTM5LjUgMzAuOC00MC41em0tOSAuMWMwIC43LS4zIDE2LTE5LjQgMjguNlYxMDNoLTl2MzcuM2MtNi42LTQuMy0xNi4zLTEzLTE5LTI3LjdsLS4xLTI1LjEgMTkuMS04LjJWOTVoOVY3OS4xbDE5LjQgOC4zdjI0LjJ6Ii8+PC9nPjwvc3ZnPg==");
+}
+
+#bom-div .hidden {
+    position: absolute;
+    display: none;
+    visibility: hidden;
+    max-height: 0;
+    max-width: 0;
+}
+
+#bom-div .right-align {
+    text-align: right !important;
+}
+
+#bom-div .okit-pointer-cursor {
+    cursor: pointer;
+}
+
+#bom-div .okit-width-100 {
+    min-width: 100%;
+}
+
+#bom-div .okit-bottom-margin {
+    margin-bottom: 5px;
+}
+
+#bom-div .summary-background {
+    background-position: left center;
+    background-repeat: no-repeat;
+    background-size: 20px;
+    padding-left: 25px;
+    margin-right: 1em;
+}
+
+#bom-div .heading-background {
+    background-position: right center;
+    background-repeat: no-repeat;
+    background-size: 20px;
+    margin-right: 1em;
+}
+
+#bom-div .action-button-background {
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: 1em;
+    width: 2em;
+    height: 1em;
+}
+
+#bom-div .action-button-column {
+    min-width: 2em;
+}
+
+#bom-div .cancel-overlay {
+    position: absolute;
+    right: 2px;
+    top: 2px;
+    z-index: 10;
+}
+
+/*
+** OCI Console Classes
+*/
+
+#bom-div .okit-console {
+    display: flex;
+    flex-direction: column;
+
+    width: 100%;
+    height: 100vh;
+    background-color: white;
+}
+
+#bom-div .header {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+
+    width: 100%;
+}
+
+#bom-div .main {
+    margin: 0;
+    padding: 0;
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    flex-grow: 1;
+
+    width: 100%;
+    overflow: hidden;
+}
+
+#bom-div .footer {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+
+    width: 100%;
+}
+
+#bom-div .okit-header {
+    width: 100%;
+    min-height: var(--console-header-height);
+    max-height: var(--console-header-height);
+    height: var(--console-header-height);
+    padding: 0;
+    margin: 0;
+}
+
+#bom-div .okit-console-header {
+    padding-left: 0;
+    padding-right: 2em;
+    box-sizing: border-box;
+
+    min-height: var(--console-header-height);
+    max-height: var(--console-header-height);
+    height: var(--console-header-height);
+    width: 100%;
+
+    border-bottom: #555555 1px solid;
+    background-color: #1d2733;
+    align-items: center;
+}
+
+#bom-div .okit-console-header > div.td {
+    min-height: var(--console-header-height);
+    max-height: var(--console-header-height);
+    height: var(--console-header-height);
+}
+
+#bom-div .okit-console-header-left-nav-button {
+    margin: auto;
+    height: var(--console-header-height);
+    width: 50px;
+    text-align: left;
+}
+
+#bom-div .okit-navigation-menu-button {
+    margin: 0;
+    padding: 0;
+}
+
+#bom-div .okit-navigation-menu-button-icon {
+    height: var(--console-header-height);
+    width: 50px;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+#bom-div .okit-console-header-oracle-logo {
+    margin: auto;
+    width: 200px;
+    text-align: left;
+    vertical-align: middle;
+}
+
+#bom-div .okit-console-header-dropdown {
+    margin: auto;
+    width: 50px;
+    vertical-align: middle;
+    text-align: left;
+    padding-right: 5px;
+}
+
+#bom-div .okit-console-header-dropdown > label {
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    font: normal 12px Helvetica Neue,Helvetica,Arial,sans-serif;
+    color: #ffffff;
+}
+
+#bom-div .okit-console-header-dropdown > select {
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font: normal 14px Helvetica Neue,Helvetica,Arial,sans-serif;
+    background-color: #1d2733;
+    color: #ffffff;
+    height: 50px;
+    min-width: 10em;
+    max-width: 10em;
+    border: none;
+}
+
+#bom-div .okit-console-header-dropdown > select:focus {
+    outline: none;
+    border: none;
+}
+
+#bom-div .okit-console-header-dropdown > select option:disabled {
+    background-color: #5a0b0b;
+}
+
+#bom-div .okit-console-header-centre {
+    margin: auto;
+    text-align: center;
+    vertical-align: middle;
+}
+
+#bom-div .okit-console-header-right {
+    margin: auto;
+    padding-right: 20px;
+    width: 20%;
+    text-align: right;
+    vertical-align: middle;
+}
+
+#bom-div .okit-console-header-right > a {
+    font-size: small;
+    vertical-align: middle;
+    min-height: 50px;
+    max-height: 50px;
+    height: 50px;
+    text-decoration: none;
+    color: white;
+}
+
+#bom-div .okit-console-header > div > a {
+    font-size: small;
+    vertical-align: middle;
+    height: 100%;
+    padding: 0;
+    margin: 0;
+    text-decoration: none;
+    color: white;
+}
+
+#bom-div .okit-console-header-right > label {
+    color: white;
+}
+
+#bom-div .okit-console-header-icon {
+    height: 50px;
+    width: 50px;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+#bom-div .okit-icon-link {
+    display: block;
+    text-indent: -9999px;
+}
+
+#bom-div .config-icon {
+    width: 32px;
+    height: 32px;
+}
+
+#bom-div .okit-toolbar {
+    min-height: var(--console-toolbar-height);
+    max-height: var(--console-toolbar-height);
+    height: var(--console-toolbar-height);
+    width: 100%;
+    padding: 0;
+    margin: 0;
+    border-bottom: #555555 1px dotted;
+    display: grid;
+    grid-auto-flow: column;
+}
+
+#bom-div .okit-toolbar-left {
+    display: inline-block;
+    align-items: left;
+    margin-right: auto;
+    vertical-align: middle;
+}
+
+#bom-div .okit-toolbar-left > div {
+    display: grid;
+    grid-auto-flow: column;
+}
+
+#bom-div .okit-toolbar-left select {
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    border: none;
+    height: 25px;
+}
+
+#bom-div .okit-toolbar-left select:first-child {
+    margin-left: 20px;
+}
+
+#bom-div .okit-toolbar-left select:focus {
+    outline: none;
+    border: none;
+}
+
+#bom-div .okit-toolbar-centre {
+    display: inline-block;
+    margin-left: auto;
+    margin-right: auto;
+    align-items: center;
+}
+
+#bom-div .okit-toolbar-centre > div {
+    display: grid;
+    grid-auto-flow: column;
+}
+
+#bom-div .okit-toolbar-right {
+    display: inline-block;
+    margin-left: auto;
+    align-items: right;
+    vertical-align: middle;
+}
+
+#bom-div .okit-toolbar-right > div {
+    display: grid;
+    grid-auto-flow: column;
+}
+
+#bom-div .okit-toolbar-button {
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 16px 16px;
+    width: 25px;
+    height: 25px;
+}
+
+#bom-div .okit-console-main {
+    display: flex;
+    flex-direction: column;
+
+    width: 100%;
+    height: 100vh;
+}
+
+#bom-div .okit-console-footer {
+    padding-left: 2em;
+    padding-right: 2em;
+    box-sizing: border-box;
+
+    min-height: var(--console-footer-height);
+    max-height: var(--console-footer-height);
+    height: var(--console-footer-height);
+
+    border-top: #aeaeae 1px solid;
+    background-color: white;
+    color: #aeaeae;
+    font-family: Helvetica Neue,Helvetica,Arial,sans-serif;
+    font-size: small;
+    align-items: center;
+}
+
+#bom-div .okit-progress {
+    width: 100%;
+}
+
+#bom-div .okit-version-div {
+}
+
+#bom-div .okit-copyright {
+}
+
+#bom-div .okit-header-gradient {
+    display: flex;
+    width: 100%;
+    min-width: 100%;
+    height: var(--console-header-gradient-height);
+    background: linear-gradient(90deg,#b4ec51 0,#53a0fd);
+}
+
+#bom-div .okit-header-navigation-bar {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+
+    width: 100%;
+}
+
+
+/*
+** Style Tables
+*/
+
+/* Classes for formatting divs as tables */
+#bom-div .table {display: table; margin: 0 auto;}
+#bom-div .thead {display: table-header-group;}
+#bom-div .tbody {display: table-row-group;}
+#bom-div .tr {display: table-row;}
+#bom-div .th {display: table-cell; color: black; overflow: hidden;}
+#bom-div .td {display: table-cell; color: black; overflow: hidden;}
+/*
+.table .thead .tr {background-color: #669999}
+.table .tbody .tr:nth-child(even) {background-color: white;}
+.table .tbody .tr:nth-child(odd) {background-color: ghostwhite;}
+*/
+#bom-div .table .tbody .tr:hover {background-color: #ddd;}
+
+/*
+.okit-property-editor .okit-table .tr .th:first-child {
+    background-color: red;
+    max-width: 20%;
+    width: 20%;
+}
+*/
+
+#bom-div .okit-property-editor .okit-table {
+    table-layout: fixed;
+}
+
+#bom-div .okit-property-editor .okit-table .tr .property-label {
+    width: 20em;
+    font-weight: bolder;
+}
+
+#bom-div .okit-property-editor .okit-table .tr .property-action-label {
+    background-position-y: center;
+    background-position-x: right;
+    background-repeat: no-repeat;
+    background-size: 1em;
+}
+
+#bom-div .okit-table {
+    border: #aeaeae 1px solid;
+    border-collapse: collapse;
+    width: 100%;
+    color: #1e2834;
+    font-family: Helvetica Neue,Helvetica,Arial,sans-serif;
+    font-size: 12px;
+    /* table-layout: fixed; */
+}
+
+#bom-div .okit-table .th {
+    border: #aeaeae 1px solid;
+    margin-top: 10px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    text-align: center;
+    font-weight: bold;
+}
+
+#bom-div .okit-table .td {
+    border: #aeaeae 1px solid;
+    padding: 2px;
+    text-align: left;
+    vertical-align: middle;
+}
+
+#bom-div .okit-table .td > select {
+    width: 100%;
+    overflow: auto;
+}
+
+#bom-div .okit-table .td > input[type="text"], input[type="email"], input[type="password"], input[type="range"], input[type="number"] {
+    width: 100%;
+}
+
+/* .okit-table .td > input[type="number"] {
+    text-align: end;
+    padding-right: 5px;
+} */
+
+#bom-div .okit-table .td > textarea {
+    width: 100%;
+    overflow: scroll;
+    white-space: nowrap;
+}
+
+#bom-div .okit-table .td > textarea.resource-documentation {
+    width: 100%;
+    overflow: scroll;
+    white-space: normal;
+}
+
+#bom-div .okit-table .td > label {
+    display: inline-block;
+}
+
+#bom-div .okit-table .td > div > label {
+    display: inline-block;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+#bom-div .okit-table .td > pre {
+}
+
+#bom-div .okit-dynamic-table > .thead > .tr > .th:last-child {
+    width: 2em;
+    max-width: 2em;
+    min-width: 2em;
+}
+
+#bom-div .okit-dynamic-table > .tbody > .tr > .td:last-child {
+    width: 2em;
+    max-width: 2em;
+    min-width: 2em;
+    text-align: center;
+}
+
+#bom-div .okit-tbody-alternating-colours > .tr:nth-child(odd) {
+}
+
+#bom-div .okit-tbody-alternating-colours > .tr:nth-child(even) {
+    background-color: lightsteelblue;
+}
+
+#bom-div .okit-tr-first-column-count > .td:first-child {
+    width: 4em;
+    text-align: center;
+}
+
+#bom-div .okit-properties-table {
+}
+
+#bom-div .okit-properties-table > .thead > .tr > .th:first-child {
+    width: 10em;
+}
+
+#bom-div .okit-properties-table > .tbody > .tr > .td:first-child {
+    width: 10em;
+    font-weight: bold;
+}
+
+#bom-div .okit-properties-table select[multiple="multiple"] > option:before {content: "☐ "}
+#bom-div .okit-properties-table select[multiple="multiple"] > option:checked:before {content: "☑ "}
+#bom-div .okit-multiple-select {
+    border: #253141 solid 1px;
+    min-height: 3em;
+}
+
+#bom-div .okit-properties-table .okit-row-details {
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+#bom-div .okit-properties-table .okit-row-details > summary {
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+#bom-div .collapsed {
+    visibility: collapse;
+    display: none;
+}
+
+:root {
+    --console-header-gradient-height: 4px;
+    --console-header-height: 50px;
+    --console-toolbar-height: 25px;
+    --console-footer-height: 30px;
+    --tab-bar-height: 30px;
+    --tab-content-height: calc(100% - var(--tab-bar-height));
+    --oci-blue: #024b7e;    
+    --oci-blue-60: rgba(2, 75, 126, 0.6);
+    --oci-blue-20: rgba(2, 75, 126, 0.2);
+}
+
+/*
+# Copyright (c) 2020, 2022, Oracle and/or its affiliates.
+# Licensed under the Universal Permissive License v 1.0 as shown at https://oss.oracle.com/licenses/upl.
+*/
+
+#bom-div .bom_heading {
+    display: grid;
+    grid-auto-flow: column;
+    /* grid-template-columns: auto 250px; */
+    margin: 10px 3px 10px 2px;
+    width: 100%;
+    max-width: 100%;
+    background-color: var(--oci-blue);
+    color: white;
+}
+
+#bom-div .bom_heading > div > div {
+    vertical-align: middle;
+    min-height: 100%;
+}
+
+#bom-div .bom_heading select {
+    margin: 1px 5px 1px 5px;
+}
+
+#bom-div .bom_heading span {
+    margin: auto 5px;
+}
+
+#bom-div .bom_heading .okit-toolbar-right {
+    margin-right: 15px;
+}
+
+#bom-div .bom_heading label {
+    margin: auto 5px;
+    font-weight: bolder;
+}
+
+#bom-div .bom_safe_harbour {
+    display: grid;
+    grid-template-columns: auto 250px;
+    max-width: 100%;
+}
+
+#bom-div .okit-bom-bom-details {
+    margin: 1px 3px 1px 2px;
+}
+
+#bom-div .okit-bom-estimate-details {
+    margin: 1px 3px 1px 2px;
+}
+
+#bom-div .bom-toolbar {
+    min-height: var(--console-toolbar-height);
+    max-height: var(--console-toolbar-height);
+    height: var(--console-toolbar-height);
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-auto-flow: column;
+}
+
+#bom-div #bom_currency_select {
+        color: black;
+}
+
       embed {
-            border: solid 2px black;
+         border: solid 2px black;
       }
    </style>
    <script>
+      window.addEventListener('message', receiveMessage, false);
+      function receiveMessage(event) {
+         if (event.origin === 'http://localhost:8080') {
+            console.log("Mad");
+            console.log(event.data);
+            //$(".estimatedCost .t-Button-label").text('Cost Estimate: ' + event.data);
+
+         }
+
+      }
       function sendMessage() {
-         const okitIframe = document.getElementById('okit');
-         const message = 'templates/reference_architecture/oci/infrastructure/ha_web_application.json';
+         const okitIframe = document.getElementById('okitIfr');
+         //const jTemplate = apex.item("P1_TEMPLATE").getValue();
+         const message = '{\"action\":\"drawFromJson\",\"content\":' + "{\"autonomous_databases\":[],\"block_storage_volumes\":[],\"compartments\":[{\"compartment_id\":\"canvas\",\"defined_tags\":{},\"display_name\":\"ha-web-ref-arch\",\"freeform_tags\":{},\"id\":\"okit.compartment.31e0ffd2-2747-4508-b5ad-776b6f60f9c7\",\"name\":\"ha-web-ref-arch\",\"parent_id\":\"canvas\"}],\"containers\":[],\"database_systems\":[{\"availability_domain\":\"3\",\"backup_network_nsg_ids\":[],\"backup_subnet_id\":\"\",\"cluster_name\":\"\",\"compartment_id\":\"okit.compartment.31e0ffd2-2747-4508-b5ad-776b6f60f9c7\",\"cpu_core_count\":0,\"data_storage_percentage\":80,\"data_storage_size_in_gb\":256,\"database_edition\":\"STANDARD_EDITION\",\"db_home\":{\"database\":{\"admin_password\":\"\",\"db_name\":\"aTFdb\",\"db_workload\":\"OLTP\"},\"db_version\":\"18.0.0.0\"},\"db_system_options\":{\"storage_management\":\"LVM\"},\"defined_tags\":{},\"disk_redundancy\":\"\",\"display_name\":\"hawebdb\",\"domain\":\"\",\"fault_domains\":[],\"freeform_tags\":{},\"hostname\":\"hawebdb1\",\"id\":\"okit.databasesystem.d6c4d979-1095-48de-924e-8a5ac3967db0\",\"license_model\":\"LICENSE_INCLUDED\",\"name\":\"hawebdb\",\"node_count\":1,\"nsg_ids\":[],\"parent_id\":\"okit.subnet.62492d17-a262-45c3-b634-9d7712e29a14\",\"shape\":\"VM.Standard2.4\",\"source\":\"NONE\",\"sparse_diskgroup\":false,\"ssh_public_keys\":\"\",\"subnet_id\":\"okit.subnet.62492d17-a262-45c3-b634-9d7712e29a14\",\"time_zone\":\"+00:00\",\"title\":\"Database System\"}],\"description\":\"High available web application\",\"dynamic_routing_gateways\":[],\"fast_connects\":[],\"file_storage_systems\":[],\"instances\":[{\"agent_config\":{\"is_management_disabled\":false,\"is_monitoring_disabled\":false},\"autonomous_database_ids\":[],\"availability_domain\":\"1\",\"block_storage_volume_ids\":[],\"compartment_id\":\"okit.compartment.31e0ffd2-2747-4508-b5ad-776b6f60f9c7\",\"defined_tags\":{},\"display_name\":\"webhost1\",\"fault_domain\":\"FAULT-DOMAIN-1\",\"freeform_tags\":{},\"id\":\"okit.instance.09d61992-634d-4f93-9830-ee7d56cf0a74\",\"is_pv_encryption_in_transit_enabled\":false,\"metadata\":{\"authorized_keys\":\"\",\"ssh_authorized_keys\":\"\",\"user_data\":\"#cloud-config\\npackages:\\n  - docker-engine\\n\\nwrite_files:\\n  # Add aliases to bash (Note: At time of writing the append flag does not appear to be working)\\n  - path: /etc/.bashrc\\n    append: true\\n    content: |\\n      alias lh='ls -lash'\\n      alias lt='ls -last'\\n      alias env='/usr/bin/env | sort'\\n      alias whatsmyip='curl -X GET https://www.whatismyip.net | grep ipaddress'\\n\\nruncmd:\\n  # Set Firewall Rules\\n  - sudo firewall-offline-cmd  --add-port=5000/tcp\\n  - sudo systemctl restart firewalld\\n  # Configure docker\\n  - sudo systemctl enable docker\\n  - sudo systemctl start docker\\n  - sudo docker login --username=testuser2000 --password=testpassword123\\n  - sudo docker pull testuser2000/python-flask:python-flask-app\\n  - sudo docker run -d -e DB_IP=hawebdb1.dbnet.haweb.oraclevcn.com -p 80:5000 --restart=always testuser2000/python-flask:python-flask-app\\n  # Add additional environment information because append does not appear to work in write_file\\n  - sudo bash -c \\\"echo 'source /etc/.bashrc' >> /etc/bashrc\\\"\\n\\nfinal_message: \\\"**** The system is finally up, after $UPTIME seconds ****\\\"\"},\"name\":\"webhost1\",\"object_storage_bucket_ids\":[],\"parent_id\":\"okit.subnet.b5f2e59c-49e5-4afb-86f0-7386054f911d\",\"preserve_boot_volume\":false,\"primary_vnic\":{\"assign_public_ip\":true,\"hostname_label\":\"webhost1\",\"nsg_ids\":[],\"skip_source_dest_check\":false,\"subnet_id\":\"okit.subnet.b5f2e59c-49e5-4afb-86f0-7386054f911d\"},\"shape\":\"VM.Standard.E2.1\",\"source_details\":{\"boot_volume_size_in_gbs\":\"50\",\"os\":\"Oracle Linux\",\"source_type\":\"image\",\"version\":\"7.7\"},\"title\":\"Instance\",\"vnics\":[{\"assign_public_ip\":true,\"hostname_label\":\"webhost1\",\"nsg_ids\":[],\"skip_source_dest_check\":false,\"subnet_id\":\"okit.subnet.b5f2e59c-49e5-4afb-86f0-7386054f911d\"}]},{\"agent_config\":{\"is_management_disabled\":false,\"is_monitoring_disabled\":false},\"autonomous_database_ids\":[],\"availability_domain\":\"1\",\"block_storage_volume_ids\":[],\"compartment_id\":\"okit.compartment.31e0ffd2-2747-4508-b5ad-776b6f60f9c7\",\"defined_tags\":{},\"display_name\":\"webhost2\",\"fault_domain\":\"FAULT-DOMAIN-2\",\"freeform_tags\":{},\"id\":\"okit.instance.0cab33c7-65f5-48bb-a7c5-5ea01b561ea4\",\"is_pv_encryption_in_transit_enabled\":false,\"metadata\":{\"authorized_keys\":\"\",\"ssh_authorized_keys\":\"\",\"user_data\":\"#cloud-config\\npackages:\\n  - docker-engine\\n\\nwrite_files:\\n  # Add aliases to bash (Note: At time of writing the append flag does not appear to be working)\\n  - path: /etc/.bashrc\\n    append: true\\n    content: |\\n      alias lh='ls -lash'\\n      alias lt='ls -last'\\n      alias env='/usr/bin/env | sort'\\n      alias whatsmyip='curl -X GET https://www.whatismyip.net | grep ipaddress'\\n\\nruncmd:\\n  # Set Firewall Rules\\n  - sudo firewall-offline-cmd  --add-port=5000/tcp\\n  - sudo systemctl restart firewalld\\n  # Configure docker\\n  - sudo systemctl enable docker\\n  - sudo systemctl start docker\\n  - sudo docker login --username=testuser2000 --password=testpassword123\\n  - sudo docker pull testuser2000/python-flask:python-flask-app\\n  - sudo docker run -d -e DB_IP=hawebdb1.dbnet.haweb.oraclevcn.com -p 80:5000 --restart=always testuser2000/python-flask:python-flask-app\\n  # Add additional environment information because append does not appear to work in write_file\\n  - sudo bash -c \\\"echo 'source /etc/.bashrc' >> /etc/bashrc\\\"\\n\\nfinal_message: \\\"**** The system is finally up, after $UPTIME seconds ****\\\"\"},\"name\":\"webhost2\",\"object_storage_bucket_ids\":[],\"parent_id\":\"okit.subnet.b5f2e59c-49e5-4afb-86f0-7386054f911d\",\"preserve_boot_volume\":false,\"primary_vnic\":{\"assign_public_ip\":true,\"hostname_label\":\"webhost2\",\"nsg_ids\":[],\"skip_source_dest_check\":false,\"subnet_id\":\"okit.subnet.b5f2e59c-49e5-4afb-86f0-7386054f911d\"},\"shape\":\"VM.Standard.E2.1\",\"source_details\":{\"boot_volume_size_in_gbs\":\"50\",\"os\":\"Oracle Linux\",\"source_type\":\"image\",\"version\":\"7.7\"},\"title\":\"Instance\",\"vnics\":[{\"assign_public_ip\":true,\"hostname_label\":\"webhost2\",\"nsg_ids\":[],\"skip_source_dest_check\":false,\"subnet_id\":\"okit.subnet.b5f2e59c-49e5-4afb-86f0-7386054f911d\"}]},{\"agent_config\":{\"is_management_disabled\":false,\"is_monitoring_disabled\":false},\"autonomous_database_ids\":[],\"availability_domain\":\"1\",\"block_storage_volume_ids\":[],\"compartment_id\":\"okit.compartment.31e0ffd2-2747-4508-b5ad-776b6f60f9c7\",\"defined_tags\":{},\"display_name\":\"bastion\",\"fault_domain\":\"\",\"freeform_tags\":{},\"id\":\"okit.instance.f46d75d0-185d-487d-b42d-697a8226504c\",\"is_pv_encryption_in_transit_enabled\":false,\"metadata\":{\"authorized_keys\":\"\",\"ssh_authorized_keys\":\"\",\"user_data\":\"\"},\"name\":\"bastion\",\"object_storage_bucket_ids\":[],\"parent_id\":\"okit.subnet.e218ba2c-8723-4332-b870-4c1b2dae0cf0\",\"preserve_boot_volume\":false,\"primary_vnic\":{\"assign_public_ip\":true,\"hostname_label\":\"bastion\",\"nsg_ids\":[],\"skip_source_dest_check\":false,\"subnet_id\":\"okit.subnet.e218ba2c-8723-4332-b870-4c1b2dae0cf0\"},\"shape\":\"VM.Standard.E2.1\",\"source_details\":{\"boot_volume_size_in_gbs\":\"50\",\"os\":\"Oracle Linux\",\"source_type\":\"image\",\"version\":\"7.7\"},\"title\":\"Instance\",\"vnics\":[{\"assign_public_ip\":true,\"hostname_label\":\"bastion\",\"nsg_ids\":[],\"skip_source_dest_check\":false,\"subnet_id\":\"okit.subnet.e218ba2c-8723-4332-b870-4c1b2dae0cf0\"}]}],\"internet_gateways\":[{\"compartment_id\":\"okit.compartment.31e0ffd2-2747-4508-b5ad-776b6f60f9c7\",\"defined_tags\":{},\"display_name\":\"okit-ig001\",\"enabled\":true,\"freeform_tags\":{},\"id\":\"okit.internetgateway.a09a99ee-ac4b-49ed-978a-6a6c18dfd2fd\",\"parent_id\":\"okit.virtualcloudnetwork.4fcbf02a-e290-4460-a7df-ee48b9767924\",\"title\":\"Internet Gateway\",\"vcn_id\":\"okit.virtualcloudnetwork.4fcbf02a-e290-4460-a7df-ee48b9767924\"}],\"load_balancers\":[{\"backend_policy\":\"ROUND_ROBIN\",\"compartment_id\":\"okit.compartment.31e0ffd2-2747-4508-b5ad-776b6f60f9c7\",\"defined_tags\":{},\"display_name\":\"ha-web-lb001\",\"freeform_tags\":{},\"health_checker\":{\"url_path\":\"/\"},\"id\":\"okit.loadbalancer.2785fb86-0028-4ba3-8158-68ce55e6a204\",\"instance_ids\":[\"okit.instance.09d61992-634d-4f93-9830-ee7d56cf0a74\",\"okit.instance.0cab33c7-65f5-48bb-a7c5-5ea01b561ea4\"],\"ip_mode\":\"\",\"is_private\":false,\"name\":\"ha-web-lb001\",\"network_security_group_ids\":[],\"parent_id\":\"okit.subnet.e218ba2c-8723-4332-b870-4c1b2dae0cf0\",\"port\":\"80\",\"protocol\":\"HTTP\",\"shape\":\"100Mbps\",\"subnet_id\":\"okit.subnet.e218ba2c-8723-4332-b870-4c1b2dae0cf0\",\"subnet_ids\":[\"okit.subnet.e218ba2c-8723-4332-b870-4c1b2dae0cf0\"],\"title\":\"Load Balancer\"}],\"local_peering_gateways\":[],\"nat_gateways\":[{\"block_traffic\":false,\"compartment_id\":\"okit.compartment.31e0ffd2-2747-4508-b5ad-776b6f60f9c7\",\"defined_tags\":{},\"display_name\":\"okit-ng001\",\"freeform_tags\":{},\"id\":\"okit.natgateway.784af6f7-e4fa-4702-a409-c7f13ba0ccfa\",\"parent_id\":\"okit.virtualcloudnetwork.4fcbf02a-e290-4460-a7df-ee48b9767924\",\"title\":\"NAT Gateway\",\"vcn_id\":\"okit.virtualcloudnetwork.4fcbf02a-e290-4460-a7df-ee48b9767924\"}],\"network_security_groups\":[],\"object_storage_buckets\":[],\"okit_version\":\"0.7.0\",\"parent_id\":\"canvas-div\",\"remote_peering_gateways\":[],\"route_tables\":[{\"compartment_id\":\"okit.compartment.31e0ffd2-2747-4508-b5ad-776b6f60f9c7\",\"defined_tags\":{},\"display_name\":\"okit-rt001\",\"freeform_tags\":{},\"id\":\"okit.routetable.b0dec644-9c56-402e-adb9-c8149b890b61\",\"parent_id\":\"okit.virtualcloudnetwork.4fcbf02a-e290-4460-a7df-ee48b9767924\",\"route_rules\":[{\"description\":\"Route to IG\",\"destination\":\"0.0.0.0/0\",\"destination_type\":\"CIDR_BLOCK\",\"network_entity_id\":\"okit.internetgateway.a09a99ee-ac4b-49ed-978a-6a6c18dfd2fd\",\"target_type\":\"internet_gateways\"}],\"vcn_id\":\"okit.virtualcloudnetwork.4fcbf02a-e290-4460-a7df-ee48b9767924\"},{\"compartment_id\":\"okit.compartment.31e0ffd2-2747-4508-b5ad-776b6f60f9c7\",\"defined_tags\":{},\"display_name\":\"okit-rt002\",\"freeform_tags\":{},\"id\":\"okit.routetable.1cbfeeef-2905-45c9-9778-631e48396309\",\"parent_id\":\"okit.virtualcloudnetwork.4fcbf02a-e290-4460-a7df-ee48b9767924\",\"route_rules\":[{\"description\":\"\",\"destination\":\"0.0.0.0/0\",\"destination_type\":\"CIDR_BLOCK\",\"network_entity_id\":\"okit.natgateway.784af6f7-e4fa-4702-a409-c7f13ba0ccfa\",\"target_type\":\"nat_gateways\"}],\"title\":\"Route Table\",\"vcn_id\":\"okit.virtualcloudnetwork.4fcbf02a-e290-4460-a7df-ee48b9767924\"},{\"compartment_id\":\"okit.compartment.31e0ffd2-2747-4508-b5ad-776b6f60f9c7\",\"defined_tags\":{},\"display_name\":\"okit-rt003\",\"freeform_tags\":{},\"id\":\"okit.routetable.be025ac9-6338-4ab2-a6c3-fb0f2c96f29b\",\"parent_id\":\"okit.virtualcloudnetwork.4fcbf02a-e290-4460-a7df-ee48b9767924\",\"route_rules\":[{\"description\":\"\",\"destination\":\"0.0.0.0/0\",\"destination_type\":\"CIDR_BLOCK\",\"network_entity_id\":\"okit.natgateway.784af6f7-e4fa-4702-a409-c7f13ba0ccfa\",\"target_type\":\"nat_gateways\"}],\"title\":\"Route Table\",\"vcn_id\":\"okit.virtualcloudnetwork.4fcbf02a-e290-4460-a7df-ee48b9767924\"}],\"security_lists\":[{\"compartment_id\":\"okit.compartment.31e0ffd2-2747-4508-b5ad-776b6f60f9c7\",\"defined_tags\":{},\"display_name\":\"okit-sl001\",\"egress_security_rules\":[{\"description\":\"\",\"destination\":\"0.0.0.0/0\",\"destination_type\":\"CIDR_BLOCK\",\"icmp_options\":{\"code\":\"\",\"type\":\"\"},\"is_stateless\":false,\"protocol\":\"all\",\"tcp_options\":{\"destination_port_range\":{\"max\":\"\",\"min\":\"\"},\"source_port_range\":{\"max\":\"\",\"min\":\"\"}},\"udp_options\":{\"destination_port_range\":{\"max\":\"\",\"min\":\"\"},\"source_port_range\":{\"max\":\"\",\"min\":\"\"}}},{\"description\":\"\",\"destination\":\"10.0.0.0/16\",\"destination_type\":\"CIDR_BLOCK\",\"icmp_options\":{\"code\":\"\",\"type\":\"\"},\"is_stateless\":false,\"protocol\":\"all\",\"tcp_options\":{\"destination_port_range\":{\"max\":\"\",\"min\":\"\"},\"source_port_range\":{\"max\":\"\",\"min\":\"\"}},\"udp_options\":{\"destination_port_range\":{\"max\":\"\",\"min\":\"\"},\"source_port_range\":{\"max\":\"\",\"min\":\"\"}}}],\"freeform_tags\":{},\"id\":\"okit.securitylist.07236b6e-0c25-4658-9531-10eb7df58b57\",\"ingress_security_rules\":[{\"description\":\"\",\"icmp_options\":{\"code\":\"\",\"type\":\"\"},\"is_stateless\":false,\"protocol\":\"6\",\"source\":\"0.0.0.0/0\",\"source_type\":\"CIDR_BLOCK\",\"tcp_options\":{\"destination_port_range\":{\"max\":\"22\",\"min\":\"22\"},\"source_port_range\":{\"max\":\"\",\"min\":\"\"}},\"udp_options\":{\"destination_port_range\":{\"max\":\"\",\"min\":\"\"},\"source_port_range\":{\"max\":\"\",\"min\":\"\"}}},{\"description\":\"\",\"icmp_options\":{\"code\":\"\",\"type\":\"\"},\"is_stateless\":false,\"protocol\":\"6\",\"source\":\"0.0.0.0/0\",\"source_type\":\"CIDR_BLOCK\",\"tcp_options\":{\"destination_port_range\":{\"max\":\"80\",\"min\":\"80\"},\"source_port_range\":{\"max\":\"\",\"min\":\"\"}},\"udp_options\":{\"destination_port_range\":{\"max\":\"\",\"min\":\"\"},\"source_port_range\":{\"max\":\"\",\"min\":\"\"}}}],\"parent_id\":\"okit.virtualcloudnetwork.4fcbf02a-e290-4460-a7df-ee48b9767924\",\"title\":\"Security List\",\"vcn_id\":\"okit.virtualcloudnetwork.4fcbf02a-e290-4460-a7df-ee48b9767924\"},{\"compartment_id\":\"okit.compartment.31e0ffd2-2747-4508-b5ad-776b6f60f9c7\",\"defined_tags\":{},\"display_name\":\"okit-sl002\",\"egress_security_rules\":[{\"description\":\"\",\"destination\":\"0.0.0.0/0\",\"destination_type\":\"CIDR_BLOCK\",\"icmp_options\":{\"code\":\"\",\"type\":\"\"},\"is_stateless\":false,\"protocol\":\"all\",\"tcp_options\":{\"destination_port_range\":{\"max\":\"\",\"min\":\"\"},\"source_port_range\":{\"max\":\"\",\"min\":\"\"}},\"udp_options\":{\"destination_port_range\":{\"max\":\"\",\"min\":\"\"},\"source_port_range\":{\"max\":\"\",\"min\":\"\"}}},{\"description\":\"\",\"destination\":\"10.0.0.0/16\",\"destination_type\":\"CIDR_BLOCK\",\"icmp_options\":{\"code\":\"\",\"type\":\"\"},\"is_stateless\":false,\"protocol\":\"all\",\"tcp_options\":{\"destination_port_range\":{\"max\":\"\",\"min\":\"\"},\"source_port_range\":{\"max\":\"\",\"min\":\"\"}},\"udp_options\":{\"destination_port_range\":{\"max\":\"\",\"min\":\"\"},\"source_port_range\":{\"max\":\"\",\"min\":\"\"}}}],\"freeform_tags\":{},\"id\":\"okit.securitylist.0d8de413-0a72-4441-942b-31b90d7c0e5c\",\"ingress_security_rules\":[{\"description\":\"\",\"icmp_options\":{\"code\":\"\",\"type\":\"\"},\"is_stateless\":false,\"protocol\":\"6\",\"source\":\"10.0.0.0/16\",\"source_type\":\"CIDR_BLOCK\",\"tcp_options\":{\"destination_port_range\":{\"max\":\"22\",\"min\":\"22\"},\"source_port_range\":{\"max\":\"\",\"min\":\"\"}},\"udp_options\":{\"destination_port_range\":{\"max\":\"\",\"min\":\"\"},\"source_port_range\":{\"max\":\"\",\"min\":\"\"}}},{\"description\":\"\",\"icmp_options\":{\"code\":\"\",\"type\":\"\"},\"is_stateless\":false,\"protocol\":\"6\",\"source\":\"10.0.0.0/16\",\"source_type\":\"CIDR_BLOCK\",\"tcp_options\":{\"destination_port_range\":{\"max\":\"80\",\"min\":\"80\"},\"source_port_range\":{\"max\":\"\",\"min\":\"\"}},\"udp_options\":{\"destination_port_range\":{\"max\":\"\",\"min\":\"\"},\"source_port_range\":{\"max\":\"\",\"min\":\"\"}}},{\"description\":\"\",\"icmp_options\":{\"code\":\"\",\"type\":\"\"},\"is_stateless\":false,\"protocol\":\"6\",\"source\":\"10.0.0.0/16\",\"source_type\":\"CIDR_BLOCK\",\"tcp_options\":{\"destination_port_range\":{\"max\":\"5000\",\"min\":\"5000\"},\"source_port_range\":{\"max\":\"\",\"min\":\"\"}},\"udp_options\":{\"destination_port_range\":{\"max\":\"\",\"min\":\"\"},\"source_port_range\":{\"max\":\"\",\"min\":\"\"}}}],\"parent_id\":\"okit.virtualcloudnetwork.4fcbf02a-e290-4460-a7df-ee48b9767924\",\"title\":\"Security List\",\"vcn_id\":\"okit.virtualcloudnetwork.4fcbf02a-e290-4460-a7df-ee48b9767924\"},{\"compartment_id\":\"okit.compartment.31e0ffd2-2747-4508-b5ad-776b6f60f9c7\",\"defined_tags\":{},\"display_name\":\"okit-sl003\",\"egress_security_rules\":[{\"description\":\"\",\"destination\":\"0.0.0.0/0\",\"destination_type\":\"CIDR_BLOCK\",\"icmp_options\":{\"code\":\"\",\"type\":\"\"},\"is_stateless\":false,\"protocol\":\"all\",\"tcp_options\":{\"destination_port_range\":{\"max\":\"\",\"min\":\"\"},\"source_port_range\":{\"max\":\"\",\"min\":\"\"}},\"udp_options\":{\"destination_port_range\":{\"max\":\"\",\"min\":\"\"},\"source_port_range\":{\"max\":\"\",\"min\":\"\"}}}],\"freeform_tags\":{},\"id\":\"okit.securitylist.645646bf-97b3-4855-adaa-701889aa6a5a\",\"ingress_security_rules\":[{\"description\":\"\",\"icmp_options\":{\"code\":\"\",\"type\":\"\"},\"is_stateless\":false,\"protocol\":\"6\",\"source\":\"10.0.0.0/16\",\"source_type\":\"CIDR_BLOCK\",\"tcp_options\":{\"destination_port_range\":{\"max\":\"22\",\"min\":\"22\"},\"source_port_range\":{\"max\":\"\",\"min\":\"\"}},\"udp_options\":{\"destination_port_range\":{\"max\":\"\",\"min\":\"\"},\"source_port_range\":{\"max\":\"\",\"min\":\"\"}}},{\"description\":\"\",\"icmp_options\":{\"code\":\"\",\"type\":\"\"},\"is_stateless\":false,\"protocol\":\"6\",\"source\":\"10.0.0.0/16\",\"source_type\":\"CIDR_BLOCK\",\"tcp_options\":{\"destination_port_range\":{\"max\":\"1521\",\"min\":\"1521\"},\"source_port_range\":{\"max\":\"\",\"min\":\"\"}},\"udp_options\":{\"destination_port_range\":{\"max\":\"\",\"min\":\"\"},\"source_port_range\":{\"max\":\"\",\"min\":\"\"}}}],\"parent_id\":\"okit.virtualcloudnetwork.4fcbf02a-e290-4460-a7df-ee48b9767924\",\"title\":\"Security List\",\"vcn_id\":\"okit.virtualcloudnetwork.4fcbf02a-e290-4460-a7df-ee48b9767924\"}],\"service_gateways\":[],\"subnets\":[{\"availability_domain\":\"0\",\"cidr_block\":\"10.0.0.0/24\",\"compartment_id\":\"okit.compartment.31e0ffd2-2747-4508-b5ad-776b6f60f9c7\",\"defined_tags\":{},\"display_name\":\"ha-web-public-sn\",\"dns_label\":\"sn001\",\"freeform_tags\":{},\"id\":\"okit.subnet.e218ba2c-8723-4332-b870-4c1b2dae0cf0\",\"ipv6cidr_block\":\"\",\"is_ipv6enabled\":false,\"name\":\"ha-web-public-sn\",\"parent_id\":\"okit.virtualcloudnetwork.4fcbf02a-e290-4460-a7df-ee48b9767924\",\"prohibit_public_ip_on_vnic\":false,\"route_table_id\":\"okit.routetable.b0dec644-9c56-402e-adb9-c8149b890b61\",\"security_list_ids\":[\"okit.securitylist.07236b6e-0c25-4658-9531-10eb7df58b57\"],\"title\":\"Subnet\",\"vcn_id\":\"okit.virtualcloudnetwork.4fcbf02a-e290-4460-a7df-ee48b9767924\"},{\"availability_domain\":\"0\",\"cidr_block\":\"10.0.1.0/24\",\"compartment_id\":\"okit.compartment.31e0ffd2-2747-4508-b5ad-776b6f60f9c7\",\"defined_tags\":{},\"display_name\":\"ha-web-private-sn\",\"dns_label\":\"sn002\",\"freeform_tags\":{},\"id\":\"okit.subnet.b5f2e59c-49e5-4afb-86f0-7386054f911d\",\"ipv6cidr_block\":\"\",\"is_ipv6enabled\":false,\"name\":\"ha-web-private-sn\",\"parent_id\":\"okit.virtualcloudnetwork.4fcbf02a-e290-4460-a7df-ee48b9767924\",\"prohibit_public_ip_on_vnic\":true,\"route_table_id\":\"okit.routetable.1cbfeeef-2905-45c9-9778-631e48396309\",\"security_list_ids\":[\"okit.securitylist.0d8de413-0a72-4441-942b-31b90d7c0e5c\"],\"title\":\"Subnet\",\"vcn_id\":\"okit.virtualcloudnetwork.4fcbf02a-e290-4460-a7df-ee48b9767924\"},{\"availability_domain\":\"0\",\"cidr_block\":\"10.0.2.0/24\",\"compartment_id\":\"okit.compartment.31e0ffd2-2747-4508-b5ad-776b6f60f9c7\",\"defined_tags\":{},\"display_name\":\"ha-web-db-sn\",\"dns_label\":\"dbnet\",\"freeform_tags\":{},\"id\":\"okit.subnet.62492d17-a262-45c3-b634-9d7712e29a14\",\"ipv6cidr_block\":\"\",\"is_ipv6enabled\":false,\"name\":\"ha-web-db-sn\",\"parent_id\":\"okit.virtualcloudnetwork.4fcbf02a-e290-4460-a7df-ee48b9767924\",\"prohibit_public_ip_on_vnic\":true,\"route_table_id\":\"okit.routetable.be025ac9-6338-4ab2-a6c3-fb0f2c96f29b\",\"security_list_ids\":[\"okit.securitylist.645646bf-97b3-4855-adaa-701889aa6a5a\"],\"title\":\"Subnet\",\"vcn_id\":\"okit.virtualcloudnetwork.4fcbf02a-e290-4460-a7df-ee48b9767924\"}],\"template_type\":\"Reference Architecture\",\"title\":\"HA Web Application\",\"virtual_cloud_networks\":[{\"cidr_block\":\"10.0.0.0/16\",\"compartment_id\":\"okit.compartment.31e0ffd2-2747-4508-b5ad-776b6f60f9c7\",\"defined_tags\":{},\"display_name\":\"ha-web-vcn001\",\"dns_label\":\"haweb\",\"freeform_tags\":{},\"id\":\"okit.virtualcloudnetwork.4fcbf02a-e290-4460-a7df-ee48b9767924\",\"ipv6cidr_block\":\"\",\"is_ipv6enabled\":false,\"name\":\"ha-web-vcn001\",\"parent_id\":\"okit.compartment.31e0ffd2-2747-4508-b5ad-776b6f60f9c7\",\"title\":\"Virtual Cloud Network\"}],\"web_application_firewalls\":[]}" + '}';
          const targetOrigin = 'http://localhost:8080';
          okitIframe.contentWindow.postMessage(message, targetOrigin);
       }
    </script>
 </head>
+
 <body style="text-align: center;">
    <h2>Test embedded okit</h2>
-   <button onclick="sendMessage()">Send Message</button><p>
-   <iframe id="okit" style='border:1px solid black;' src="http://localhost:8080/okit/oci" width="500px" height="500px">
+   <button onclick="sendMessage()">Send Message</button>
+   <p>
+      <iframe id="okitIfr" style='border:1px solid black;' src="http://localhost:8080/okit/oci" width="500px"
+         height="500px"></iframe>
+         <div id="bom-div" class="okit-bom-canvas">
+            <div id="bom_heading_div" class="bom_heading">
+                <div class="okit-toolbar-left" id="bom_view_toolbar">
+                    <div>
+                        <div class="excel okit-toolbar-button" title="Export to Excel"></div>
+                    </div>
+                </div>
+                <div class="okit-toolbar-right" id="bom_view_currency_estimate">
+                    <div>
+                        <select id="bom_currency_select"><option value="GBP">GBP - British Pound</option><option value="USD">USD - US Dollar</option><option value="EUR">EUR - Euro</option><option value="AUD">AUD - Australian Dollar</option><option value="CAD">CAD - Canadian Dollar</option><option value="NZD">NZD - New Zealand Dollar</option><option value="SEK">SEK - Swedish Krona</option><option value="NOK">NOK - Norwegian Krone</option><option value="AED">AED - UAE Dirham</option><option value="ARS">ARS - Argentine Peso</option><option value="BDT">BDT - Bangladeshi Taka</option><option value="BGN">BGN - Bulgarian Lev</option><option value="BHD">BHD - Bahraini Dinar</option><option value="BRL">BRL - Brazilian Real</option><option value="CHF">CHF - Swiss Franc</option><option value="CLP">CLP - Chilean Peso</option><option value="CNY">CNY - Chinese Yuan</option><option value="COP">COP - Colombian Peso</option><option value="CRC">CRC - Costa Rican Colón</option><option value="CZK">CZK - Česká Koruna</option><option value="DKK">DKK - Danish Krone</option><option value="EGP">EGP - Egyptian Pound</option><option value="HKD">HKD - Hong Kong Dollar</option><option value="HRK">HRK - Croatian Kuna</option><option value="HUF">HUF - Hungarian Forint</option><option value="IDR">IDR - Indonesian Rupiah</option><option value="ILS">ILS - Israeli New Shekel</option><option value="INR">INR - Indian Rupee</option><option value="ISK">ISK - Icelandic Króna</option><option value="JPY">JPY - Japanese Yen</option><option value="KRW">KRW - South Korean Won</option><option value="KWD">KWD - Kuwaiti Dinar</option><option value="MXN">MXN - Mexican Peso</option><option value="MYR">MYR - Malaysian Ringgit</option><option value="PEN">PEN - Peruvian Sol</option><option value="PHP">PHP - Philippine Peso</option><option value="PKR">PKR - Pakistani Rupee</option><option value="PLN">PLN - Polish Zloty</option><option value="QAR">QAR - Qatari Rial</option><option value="RON">RON - Romanian Leu</option><option value="RSD">RSD - Serbian Dinar</option><option value="RUB">RUB - Russian Ruble</option><option value="SAR">SAR - Saudi Riyal</option><option value="SGD">SGD - Singapore Dollar</option><option value="TRY">TRY - Turkish Lira</option><option value="TWD">TWD - New Taiwan Dollar</option><option value="VND">VND - Vietnamese Dong</option><option value="ZAR">ZAR - South African Rand</option></select><span>Estimated Monthly Cost</span><label class="bom_header_estimate">$0.00</label>
+                    </div>
+                </div>
+            </div>
+            <div id="bom_safe_harbour_div" class="bom_safe_harbour">
+                <p class="okit-cost-small-print">The values displayed are purely for estimation purposes only and are generated
+                    from our public pricing pages. For accurate costing you will need to consult your OCI Account Manager.</p>
+            </div>
+            <div id="bom_div" class="okit-bom-bom-details">
+                <details class="okit-details" open="true">
+                    <summary class="summary-background"><label>Bill of Materials</label></summary>
+                    <div class="okit-details-body">
+                        <div class="table okit-table">
+                            <div class="thead">
+                                <div class="tr">
+                                    <div class="th">SKU</div>
+                                    <div class="th">Quantity</div>
+                                    <div class="th">Description</div>
+                                    <div class="th">Metric</div>
+                                    <div class="th">List Price</div>
+                                    <div class="th">Units</div>
+                                    <div class="th">Utilisation</div>
+                                    <div class="th">Price per Month</div>
+                                </div>
+                            </div>
+                            <div class="tbody"></div>
+                        </div>
+                    </div>
+                </details>
+            </div>
+            <div id="estimate_div" class="okit-bom-estimate-details">
+                <details class="okit-details" open="true">
+                    <summary class="summary-background"><label>Cost Estimate</label></summary>
+                    <div class="okit-details-body">
+                        <div class="table okit-table">
+                            <div class="thead">
+                                <div class="tr">
+                                    <div class="th">Resource</div>
+                                    <div class="th">Monthly Spend</div>
+                                </div>
+                            </div>
+                            <div class="tbody"></div>
+                        </div>
+                    </div>
+                </details>
+            </div>
+            <div id="bom_disclaimer_div" class="bom_disclaimer">
+                <p class="okit-cost-small-print">Disclaimer: This sample quote is provided solely for evaluation purposes and is
+                    intended to further discussions between you and Oracle. This sample quote is not eligible for acceptance by
+                    you and is not a binding contract between you and Oracle for the services specified. If you would like to
+                    purchase the services specified in this sample quote, please request that Oracle issue you a formal quote
+                    (which may include an OMA or a CSA if you do not already have an appropriate agreement in place with Oracle)
+                    for your acceptance and execution. Your formal quote will be effective only upon Oracle's acceptance of the
+                    formal quote (and the OMA or CSA, if required). </p>
+            </div>
+        </div>
 
 
 </body>
+
 </html>

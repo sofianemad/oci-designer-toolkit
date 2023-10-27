@@ -22,8 +22,8 @@
                     okitBoMView.currency = "EUR"
                     okitBoMView.newCanvas();
                     okitBoMView.getBoM();
-                    est = okitBoMView.drawBoMPanel();
-                    sendMessage(est)
+                    okitBoMView.drawBoMPanel();
+                    okitBoMView.drawEstimatePanel();
                 }
 
                 if (msgAsJson.action == "downloadImage") {

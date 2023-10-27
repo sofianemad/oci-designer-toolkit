@@ -27,8 +27,8 @@ class OkitBoMView extends OkitJsonView {
     }
 
     newCanvas(width=100, height=100, for_export=false) {
-        const canvas_div = d3.select(d3Id(this.parent_id));
-        // Empty existing Canvas
+        var parentBom = window.parent.document.getElementById(this.parent_id);
+        const canvas_div = d3.select(parentBom);
         canvas_div.selectAll('*').remove();
         // Heading 
         this.heading_div = canvas_div.append('div').attr('id', 'bom_heading_div').attr('class', 'bom_heading')
