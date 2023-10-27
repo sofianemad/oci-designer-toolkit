@@ -27,8 +27,8 @@ class OkitBoMView extends OkitJsonView {
     }
 
     newCanvas(width=100, height=100, for_export=false) {
-        var parentBom = window.parent.document.getElementById(this.parent_id);
-        const canvas_div = d3.select(parentBom);
+        const canvas_div = d3.select(d3Id(this.parent_id));
+        // Empty existing Canvas
         canvas_div.selectAll('*').remove();
         // Heading 
         this.heading_div = canvas_div.append('div').attr('id', 'bom_heading_div').attr('class', 'bom_heading')
@@ -143,6 +143,9 @@ class OkitBoMView extends OkitJsonView {
         this.estimate = bom.estimate
         console.info('BoM Panel Data', this.bom)
         console.info('Estimate Panel Data', this.estimate)
+        var arrayBom=[]
+        arrayBom.push(this.bom, this.estimate)
+        return arrayBom
     }
 
 }

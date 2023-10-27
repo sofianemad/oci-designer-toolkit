@@ -20,10 +20,8 @@
                     loadModelFromJson(msgAsJson.content);
                     okitBoMView = OkitBoMView.newView(okitJsonModel, okitOciData, resource_icons);
                     okitBoMView.currency = "EUR"
-                    okitBoMView.newCanvas();
-                    okitBoMView.getBoM();
-                    okitBoMView.drawBoMPanel();
-                    okitBoMView.drawEstimatePanel();
+                    est = okitBoMView.getBoM();
+                    sendMessage(est);
                 }
 
                 if (msgAsJson.action == "downloadImage") {
