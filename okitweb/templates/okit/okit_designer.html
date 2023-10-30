@@ -18,6 +18,7 @@
 
                 if (msgAsJson.action == "drawFromJson") {
                     loadModelFromJson(msgAsJson.content);
+                    generateBOM(msgAsJson.currency)
                 }
 
                 if (msgAsJson.action == "downloadImage") {
@@ -30,6 +31,13 @@
 
                 if (msgAsJson.action == "generateBOM") {
                     generateBOM(msgAsJson.content);
+                }
+
+                if (msgAsJson.action == "downloadExcel") {
+                    const wb = new BoMWorkbook(okitBoMView.bom, okitBoMView.estimate, okitBoMView.currency)
+                    const uri = 'data:Application/octet-stream,' + encodeURIComponent(wb.exportToXls())
+                    const name = 'okit-bom.xls'
+                    triggerDownload(uri, name)
                 }
             }
         }
