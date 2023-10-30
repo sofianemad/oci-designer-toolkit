@@ -18,10 +18,6 @@
 
                 if (msgAsJson.action == "drawFromJson") {
                     loadModelFromJson(msgAsJson.content);
-                    okitBoMView = OkitBoMView.newView(okitJsonModel, okitOciData, resource_icons);
-                    okitBoMView.currency = "EUR"
-                    est = okitBoMView.getBoM();
-                    sendMessage(est);
                 }
 
                 if (msgAsJson.action == "downloadImage") {
@@ -29,9 +25,19 @@
                 }
 
                 if (msgAsJson.action == "generateTerraform") {
-                    handleExportToTerraformLocal()
+                    handleExportToTerraformLocal();
+                }
+
+                if (msgAsJson.action == "generateBOM") {
+                    generateBOM(msgAsJson.content);
                 }
             }
+        }
+        function generateBOM(currency) {
+            okitBoMView = OkitBoMView.newView(okitJsonModel, okitOciData, resource_icons);
+            okitBoMView.currency = currency;
+            est = okitBoMView.getBoM();
+            sendMessage(est);
         }
         function sendMessage(msg) {
             parent.postMessage(msg, 'https://madhacksapp.com');
