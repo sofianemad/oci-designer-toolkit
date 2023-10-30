@@ -13,7 +13,7 @@
         window.addEventListener('message', receiveMessage, false);
 
         function receiveMessage(event) {
-            if (event.origin === 'https://g5e60ebadf0d95a-db202112101358.adb.eu-frankfurt-1.oraclecloudapps.com') {
+            if (event.origin === 'https://madhacksapp.com:8443') {
                 msgAsJson = JSON.parse(event.data);
 
                 if (msgAsJson.action == "drawFromJson") {
@@ -34,7 +34,7 @@
             }
         }
         function sendMessage(msg) {
-            parent.postMessage(msg, 'https://g5e60ebadf0d95a-db202112101358.adb.eu-frankfurt-1.oraclecloudapps.com');
+            parent.postMessage(msg, 'https://madhacksapp.com:8443');
         }
     </script>
     <script type="text/javascript" src="{{ url_for('static', filename='okit/js/okit.js') }}"></script>
