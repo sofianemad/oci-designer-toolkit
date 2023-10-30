@@ -13,7 +13,7 @@
         window.addEventListener('message', receiveMessage, false);
 
         function receiveMessage(event) {
-            if (event.origin === 'https://madhacksapp.com:8443') {
+            if (event.origin === 'https://madhacksapp.com') {
                 msgAsJson = JSON.parse(event.data);
 
                 if (msgAsJson.action == "drawFromJson") {
@@ -34,7 +34,7 @@
             }
         }
         function sendMessage(msg) {
-            parent.postMessage(msg, 'https://madhacksapp.com:8443');
+            parent.postMessage(msg, 'https://madhacksapp.com');
         }
     </script>
     <script type="text/javascript" src="{{ url_for('static', filename='okit/js/okit.js') }}"></script>
