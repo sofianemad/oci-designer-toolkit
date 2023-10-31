@@ -29,6 +29,10 @@
                     handleExportToTerraformLocal();
                 }
 
+                if (msgAsJson.action == "generateResourceManager") {
+                    handleExportToResourceManagerLocal();
+                }
+
                 if (msgAsJson.action == "generateBOM") {
                     generateBOM(msgAsJson.content);
                 }
